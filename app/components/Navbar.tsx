@@ -1,5 +1,6 @@
+"use client";
 import Link from "next/link";
-import AuthButtons from "./Authbuttons";
+import AuthButtons from "./AuthButtons";
 
 export default function Navbar() {
   return (
@@ -78,7 +79,7 @@ export default function Navbar() {
             Search Movies
           </Link>
 
-          {/* Auth */}
+          {/* Auth Buttons */}
           <AuthButtons />
 
         </div>

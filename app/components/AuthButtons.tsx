@@ -6,40 +6,39 @@ import { supabase } from "../lib/supabase";
 
 export default function AuthButtons() {
 
-  const [user, setUser] = useState<any>(null);
+  const [user, setUser] = useState(null as any);
 
   useEffect(() => {
 
-    async function getUser() {
+    const getUser = async () => {
 
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
+      const { data } = await supabase.auth.getUser();
 
-      setUser(user);
-    }
+      setUser(data.user);
+
+    };
 
     getUser();
 
   }, []);
 
-  async function handleLogout() {
+  const handleLogout = async () => {
 
     await supabase.auth.signOut();
 
     window.location.reload();
-  }
+
+  };
 
   if (user) {
+
     return (
       <div className="flex items-center gap-3">
 
-        {/* Avatar */}
         <div className="w-10 h-10 rounded-full bg-red-600 flex items-center justify-center font-bold">
           {user.email?.charAt(0).toUpperCase()}
         </div>
 
-        {/* Logout */}
         <button
           onClick={handleLogout}
           className="bg-zinc-900 border border-zinc-700 hover:border-zinc-500 px-4 py-2 rounded-xl text-sm"
