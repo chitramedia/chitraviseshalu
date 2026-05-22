@@ -1,9 +1,12 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { supabase } from "../lib/supabase";
 
 export default function LoginPage() {
+
+  const router = useRouter();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -18,7 +21,8 @@ export default function LoginPage() {
     if (error) {
       alert(error.message);
     } else {
-      alert("Login successful!");
+      router.push("/");
+      router.refresh();
     }
   }
 
@@ -32,7 +36,8 @@ export default function LoginPage() {
     if (error) {
       alert(error.message);
     } else {
-      alert("Signup successful! Check your email.");
+      alert("Account created! Please verify your email.");
+      router.push("/");
     }
   }
 

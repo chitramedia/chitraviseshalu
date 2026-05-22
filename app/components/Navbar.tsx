@@ -1,4 +1,5 @@
 import Link from "next/link";
+import AuthButtons from "./Authbuttons";
 
 export default function Navbar() {
   return (
@@ -77,13 +78,8 @@ export default function Navbar() {
             Search Movies
           </Link>
 
-          {/* Login */}
-          <Link
-            href="/login"
-            className="bg-red-600 hover:bg-red-700 px-4 md:px-5 py-2 rounded-xl text-sm font-semibold transition"
-          >
-            Login
-          </Link>
+          {/* Auth */}
+          <AuthButtons />
 
         </div>
 
