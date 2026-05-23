@@ -1,3 +1,4 @@
+import WatchlistButton from "@/app/components/WatchlistButton";
 import BackButton from "@/app/components/BackButton";
 import ReviewSection from "@/app/components/ReviewSection";
 
@@ -63,6 +64,8 @@ export default async function MoviePage({ params }: Props) {
 
       {/* Content */}
       <div className="max-w-7xl mx-auto px-6 py-10 relative -mt-52 z-10">
+
+        {/* Back Button */}
         <BackButton />
 
         <div className="grid md:grid-cols-[300px_1fr] gap-10">
@@ -121,6 +124,17 @@ export default async function MoviePage({ params }: Props) {
               <div className="bg-zinc-900/80 backdrop-blur-md border border-zinc-800 px-5 py-3 rounded-full">
                 🎬 {movie.runtime} mins
               </div>
+
+            </div>
+
+            {/* Watchlist */}
+            <div className="mt-8">
+
+              <WatchlistButton
+                movieId={id}
+                movieTitle={movie.title}
+                posterPath={movie.poster_path}
+              />
 
             </div>
 
