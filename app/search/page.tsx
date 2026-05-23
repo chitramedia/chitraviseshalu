@@ -1,4 +1,5 @@
 import Link from "next/link";
+import SearchBar from "../components/SearchBar";
 
 async function searchMovies(query: string) {
 
@@ -56,28 +57,10 @@ export default async function SearchPage({ searchParams }: Props) {
 
         </div>
 
-        {/* Search Form */}
-        <form className="mb-14">
-
-          <div className="relative">
-
-            <input
-              type="text"
-              name="query"
-              defaultValue={query}
-              placeholder="Search movies..."
-              className="w-full bg-zinc-900/80 backdrop-blur-md border border-zinc-800 rounded-2xl px-6 py-5 text-lg outline-none focus:border-red-600 transition"
-            />
-
-            <button
-              className="absolute right-3 top-1/2 -translate-y-1/2 bg-red-600 hover:bg-red-700 px-5 py-2 rounded-xl transition"
-            >
-              Search
-            </button>
-
-          </div>
-
-        </form>
+        {/* Live Search */}
+        <div className="mb-14">
+          <SearchBar />
+        </div>
 
         {/* Empty State */}
         {query && movies.length === 0 && (
@@ -130,7 +113,6 @@ export default async function SearchPage({ searchParams }: Props) {
                 {/* Poster */}
                 <div className="relative overflow-hidden">
 
-                  {/* Skeleton */}
                   <div className="absolute inset-0 animate-pulse bg-zinc-800"></div>
 
                   <img
