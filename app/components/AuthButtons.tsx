@@ -37,8 +37,12 @@ export default function AuthButtons() {
 
     setLoading(true);
 
+    const origin = typeof window !== 'undefined' ? window.location.origin : '';
     await supabase.auth.signInWithOAuth({
       provider: "google",
+      options: {
+        redirectTo: `${origin}/`,
+      },
     });
 
     setLoading(false);
