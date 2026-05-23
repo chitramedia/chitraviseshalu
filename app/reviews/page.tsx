@@ -1,7 +1,9 @@
 export const dynamic = "force-dynamic";
+
 import { supabase } from "../lib/supabase";
 
 async function getReviews() {
+
   const { data, error } = await supabase
     .from("reviews")
     .select("*")
@@ -50,7 +52,7 @@ export default async function ReviewsPage() {
             <a
               key={review.id}
               href={`/movie/${review.movie_id}`}
-                className="flex gap-5 border border-zinc-800 rounded-xl p-5 hover:border-red-500 hover:-translate-y-1 hover:shadow-[0_0_30px_rgba(220,38,38,0.25)] transition duration-300 bg-zinc-950/40 backdrop-blur-md" 
+              className="flex gap-5 border border-zinc-800 rounded-xl p-5 hover:border-red-500 hover:-translate-y-1 hover:shadow-[0_0_30px_rgba(220,38,38,0.25)] transition duration-300 bg-zinc-950/40 backdrop-blur-md"
             >
 
               {/* Poster */}
@@ -81,7 +83,11 @@ export default async function ReviewsPage() {
                       {review.movie_title}
                     </h2>
 
-                    <p className="text-zinc-500 text-sm">
+                    <p className="text-sm text-red-500 mt-1">
+                      {review.user_email || "Anonymous User"}
+                    </p>
+
+                    <p className="text-zinc-500 text-sm mt-1">
                       {new Date(review.created_at).toLocaleString()}
                     </p>
 
