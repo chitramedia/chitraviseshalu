@@ -37,13 +37,7 @@ export default function AuthButtons() {
 
     setLoading(true);
 
-    const origin = typeof window !== 'undefined' ? window.location.origin : '';
-    await supabase.auth.signInWithOAuth({
-      provider: "google",
-      options: {
-        redirectTo: `${origin}/`,
-      },
-    });
+    window.location.href = "/login";
 
     setLoading(false);
   };
@@ -66,7 +60,8 @@ export default function AuthButtons() {
 
         <>
           {/* Avatar */}
-        <div className="hidden md:flex items-center justify-center w-9 h-9 rounded-full bg-white text-black text-sm font-bold shadow-[0_0_15px_rgba(255,255,255,0.18)]">
+          <div className="hidden md:flex items-center justify-center w-9 h-9 rounded-full bg-white text-black text-sm font-bold shadow-[0_0_15px_rgba(255,255,255,0.18)]">
+
             {user.email?.charAt(0).toUpperCase()}
 
           </div>
@@ -88,7 +83,7 @@ export default function AuthButtons() {
           disabled={loading}
           className="bg-red-600 hover:bg-red-700 disabled:opacity-50 px-5 py-2 rounded-xl text-sm font-semibold transition duration-300"
         >
-          {loading ? "Signing in..." : "Login"}
+          {loading ? "Opening..." : "Login"}
         </button>
 
       )}
