@@ -1,4 +1,5 @@
 "use client";
+
 import Link from "next/link";
 import AuthButtons from "./AuthButtons";
 
@@ -38,8 +39,8 @@ export default function Navbar() {
           </Link>
 
           <Link
-            href="#"
-            className="hover:text-white transition duration-200"
+            href="/reviews"
+            className="hover:text-red-500 transition duration-200"
           >
             Reviews
           </Link>

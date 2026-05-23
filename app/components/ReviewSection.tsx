@@ -48,7 +48,7 @@ export default function ReviewSection({ movieId }: Props) {
       .insert([
         {
           movie_id: movieId,
-          movie_title: movieId,
+            movie_title: document.title,
           review_text: review,
           rating,
         },
