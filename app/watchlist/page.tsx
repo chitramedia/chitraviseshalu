@@ -1,3 +1,4 @@
+import BackButton from "../components/BackButton";
 export const dynamic = "force-dynamic";
 
 import { supabase } from "../lib/supabase";
@@ -33,6 +34,7 @@ export default async function WatchlistPage() {
     <main className="min-h-screen bg-black text-white px-6 py-10">
 
       <div className="max-w-7xl mx-auto">
+        <BackButton />
 
         <h1 className="text-5xl font-extrabold mb-10">
           My Watchlist

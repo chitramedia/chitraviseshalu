@@ -1,3 +1,4 @@
+import BackButton from "../components/BackButton";
 export const dynamic = "force-dynamic";
 
 import { supabase } from "../lib/supabase";
@@ -25,6 +26,7 @@ export default async function ReviewsPage() {
     <main className="min-h-screen bg-black text-white px-6 py-10">
 
       <div className="max-w-5xl mx-auto">
+        <BackButton />
 
         <h1 className="text-4xl font-bold mb-8">
           Community Reviews

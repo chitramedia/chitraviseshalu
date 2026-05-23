@@ -56,6 +56,13 @@ export default function Navbar() {
           </Link>
 
           <Link
+            href="/profile"
+            className="hover:text-white hover:bg-zinc-900 px-4 py-2 rounded-xl transition duration-300"
+          >
+            Profile
+          </Link>
+
+          <Link
             href="/watchlist"
             className="hover:text-white hover:bg-zinc-900 px-4 py-2 rounded-xl transition duration-300"
           >

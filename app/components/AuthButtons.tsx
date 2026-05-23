@@ -1,61 +1,94 @@
 "use client";
 
-import Link from "next/link";
 import { useEffect, useState } from "react";
 import { supabase } from "../lib/supabase";
 
 export default function AuthButtons() {
 
-  const [user, setUser] = useState(null as any);
+  const [user, setUser] = useState<any>(null);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
 
-    const getUser = async () => {
+    checkUser();
 
-      const { data } = await supabase.auth.getUser();
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange(() => {
+      checkUser();
+    });
 
-      setUser(data.user);
-
+    return () => {
+      subscription.unsubscribe();
     };
-
-    getUser();
 
   }, []);
 
-  const handleLogout = async () => {
+  const checkUser = async () => {
+
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    setUser(user);
+  };
+
+  const signIn = async () => {
+
+    setLoading(true);
+
+    await supabase.auth.signInWithOAuth({
+      provider: "google",
+    });
+
+    setLoading(false);
+  };
+
+  const signOut = async () => {
+
+    setLoading(true);
 
     await supabase.auth.signOut();
 
-    window.location.reload();
+    setUser(null);
 
+    setLoading(false);
   };
 
-  if (user) {
+  return (
+    <div className="flex items-center gap-3">
 
-    return (
-      <div className="flex items-center gap-3">
+      {user ? (
 
-        <div className="w-10 h-10 rounded-full bg-red-600 flex items-center justify-center font-bold">
-          {user.email?.charAt(0).toUpperCase()}
-        </div>
+        <>
+          {/* Avatar */}
+        <div className="hidden md:flex items-center justify-center w-9 h-9 rounded-full bg-white text-black text-sm font-bold shadow-[0_0_15px_rgba(255,255,255,0.18)]">
+            {user.email?.charAt(0).toUpperCase()}
+
+          </div>
+
+          {/* Logout */}
+          <button
+            onClick={signOut}
+            disabled={loading}
+            className="bg-zinc-900 border border-zinc-800 hover:border-red-500 disabled:opacity-50 px-5 py-2 rounded-xl text-sm font-semibold transition duration-300"
+          >
+            {loading ? "Logging out..." : "Logout"}
+          </button>
+        </>
+
+      ) : (
 
         <button
-          onClick={handleLogout}
-          className="bg-zinc-900 border border-zinc-700 hover:border-zinc-500 px-4 py-2 rounded-xl text-sm"
+          onClick={signIn}
+          disabled={loading}
+          className="bg-red-600 hover:bg-red-700 disabled:opacity-50 px-5 py-2 rounded-xl text-sm font-semibold transition duration-300"
         >
-          Logout
+          {loading ? "Signing in..." : "Login"}
         </button>
 
-      </div>
-    );
-  }
+      )}
 
-  return (
-    <Link
-      href="/login"
-      className="bg-red-600 hover:bg-red-700 px-4 md:px-5 py-2 rounded-xl text-sm font-semibold transition"
-    >
-      Login
-    </Link>
+    </div>
   );
 }
