@@ -47,6 +47,14 @@ export default function ReviewSection({
   }, []);
 
   const submitReview = async () => {
+    const {
+  data: { user },
+} = await supabase.auth.getUser();
+
+if (!user) {
+  alert("Please login to submit a review");
+  return;
+}
     if (!review) {
       alert("Please write a review");
       return;
