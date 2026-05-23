@@ -4,7 +4,7 @@ async function getReviews() {
   const { data, error } = await supabase
     .from("reviews")
     .select("*")
-    .order("id", { ascending: false });
+    .order("created_at", { ascending: false });
 
   if (error) {
     console.log(error);
@@ -27,37 +27,68 @@ export default async function ReviewsPage() {
         </h1>
 
         <div className="space-y-6">
+         {reviews.length === 0 && (
+  <div className="text-center py-20">
 
+    <h2 className="text-3xl font-bold mb-4">
+      No Reviews Yet
+    </h2>
+
+    <p className="text-zinc-500">
+      Be the first person to review a movie.
+    </p>
+
+  </div>
+)}   
           {reviews.map((review: any) => (
             <a
               key={review.id}
               href={`/movie/${review.movie_id}`}
-              className="block border border-zinc-800 rounded-xl p-6 hover:border-red-500 transition"
+              className="flex gap-5 border border-zinc-800 rounded-xl p-5 hover:border-red-500 transition"
             >
 
-              <div className="flex justify-between mb-4">
+              {/* Poster */}
+              <img
+                src={`https://image.tmdb.org/t/p/w200${review.poster_path}`}
+                alt={review.movie_title}
+                className="w-24 rounded-lg object-cover"
+              />
 
-                <div>
+              {/* Content */}
+              <div className="flex-1">
 
-                  <p className="font-semibold text-lg">
-                    Anonymous User
-                  </p>
+                <div className="flex justify-between items-start mb-3">
 
-                  <p className="text-red-500 text-sm font-medium">
-                    {review.movie_title}
-                  </p>
+                  <div>
+
+                    <h2 className="text-xl font-bold">
+                      {review.movie_title}
+                    </h2>
+
+                    <p className="text-zinc-500 text-sm">
+                      {new Date(review.created_at).toLocaleString()}
+                    </p>
+
+                  </div>
+
+                  {/* Stars */}
+                  <div className="flex text-yellow-400 text-xl">
+
+                    {[1, 2, 3, 4, 5].map((star) => (
+                      <span key={star}>
+                        {review.rating >= star ? "★" : "☆"}
+                      </span>
+                    ))}
+
+                  </div>
 
                 </div>
 
-                <div className="text-yellow-400 font-bold">
-                  {review.rating} ⭐
-                </div>
+                <p className="text-zinc-300 leading-relaxed">
+                  {review.review_text}
+                </p>
 
               </div>
-
-              <p className="text-zinc-300 leading-relaxed">
-                {review.review_text}
-              </p>
 
             </a>
           ))}

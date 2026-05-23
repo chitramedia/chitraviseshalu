@@ -35,25 +35,84 @@ export default async function SearchPage({ searchParams }: Props) {
   return (
     <main className="min-h-screen bg-black text-white px-6 py-12">
 
-      {/* Heading */}
       <div className="max-w-7xl mx-auto">
 
-        <h1 className="text-5xl font-extrabold mb-10">
-          Search Movies
-        </h1>
+        {/* Hero */}
+        <div className="mb-14 text-center">
+
+          <p className="uppercase tracking-[0.3em] text-red-500 text-sm mb-4">
+            Search Movies
+          </p>
+
+          <h1 className="text-5xl md:text-6xl font-extrabold mb-5">
+            Discover Trending Cinema
+          </h1>
+
+          <p className="text-zinc-400 max-w-2xl mx-auto leading-relaxed">
+            Search trending movies, explore cinematic details,
+            community reviews, ratings, and discover your next
+            favorite film.
+          </p>
+
+        </div>
 
         {/* Search Form */}
-        <form className="mb-12">
+        <form className="mb-14">
 
-          <input
-            type="text"
-            name="query"
-            defaultValue={query}
-            placeholder="Search movies..."
-            className="w-full bg-zinc-900 border border-zinc-800 rounded-2xl px-6 py-4 text-lg outline-none focus:border-red-600"
-          />
+          <div className="relative">
+
+            <input
+              type="text"
+              name="query"
+              defaultValue={query}
+              placeholder="Search movies..."
+              className="w-full bg-zinc-900/80 backdrop-blur-md border border-zinc-800 rounded-2xl px-6 py-5 text-lg outline-none focus:border-red-600 transition"
+            />
+
+            <button
+              className="absolute right-3 top-1/2 -translate-y-1/2 bg-red-600 hover:bg-red-700 px-5 py-2 rounded-xl transition"
+            >
+              Search
+            </button>
+
+          </div>
 
         </form>
+
+        {/* Empty State */}
+        {query && movies.length === 0 && (
+
+          <div className="text-center py-20">
+
+            <h2 className="text-3xl font-bold mb-4">
+              No Movies Found
+            </h2>
+
+            <p className="text-zinc-500">
+              Try searching for another movie title.
+            </p>
+
+          </div>
+
+        )}
+
+        {/* Initial Empty State */}
+        {!query && (
+
+          <div className="text-center py-20">
+
+            <h2 className="text-3xl font-bold mb-4">
+              Start Exploring Movies
+            </h2>
+
+            <p className="text-zinc-500">
+              Search for your favorite movies, reviews,
+              and trending cinema.
+            </p>
+
+          </div>
+
+        )}
 
         {/* Results */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -63,31 +122,41 @@ export default async function SearchPage({ searchParams }: Props) {
             <Link
               href={`/movie/${movie.id}`}
               key={movie.id}
+              className="group"
             >
 
-              <div className="group bg-zinc-900 border border-zinc-800 rounded-2xl overflow-hidden hover:border-red-600 transition cursor-pointer">
+              <div className="relative bg-zinc-900 border border-zinc-800 rounded-2xl overflow-hidden hover:border-red-600 hover:-translate-y-2 hover:shadow-[0_0_30px_rgba(220,38,38,0.35)] transition duration-300">
 
-                <div className="overflow-hidden">
+                {/* Poster */}
+                <div className="relative overflow-hidden">
+
+                  {/* Skeleton */}
+                  <div className="absolute inset-0 animate-pulse bg-zinc-800"></div>
 
                   <img
                     src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
                     alt={movie.title}
-                    className="w-full h-[420px] object-cover group-hover:scale-105 transition duration-300"
+                    className="relative w-full h-[420px] object-cover group-hover:scale-110 transition duration-500"
                   />
 
                 </div>
 
-                <div className="p-5">
+                {/* Overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent opacity-90"></div>
 
-                  <h2 className="text-xl font-bold group-hover:text-red-500 transition">
+                {/* Rating */}
+                <div className="absolute top-3 right-3 bg-black/80 backdrop-blur-sm px-3 py-1 rounded-full text-sm text-yellow-400 font-semibold border border-zinc-700">
+                  ⭐ {movie.vote_average?.toFixed(1)}
+                </div>
+
+                {/* Content */}
+                <div className="absolute bottom-0 p-5 w-full">
+
+                  <h2 className="text-lg font-bold text-white group-hover:text-red-500 transition">
                     {movie.title}
                   </h2>
 
-                  <p className="text-zinc-400 mt-2 text-sm">
-                    ⭐ {movie.vote_average?.toFixed(1)}
-                  </p>
-
-                  <p className="text-zinc-500 mt-2 text-sm">
+                  <p className="text-zinc-400 text-sm mt-1">
                     {movie.release_date}
                   </p>
 
