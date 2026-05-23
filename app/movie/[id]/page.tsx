@@ -71,7 +71,8 @@ export default async function MoviePage({ params }: Props) {
             <img
               src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
               alt={movie.title}
-              className="rounded-2xl shadow-2xl hover:scale-105 transition duration-500"            />
+              className="rounded-2xl shadow-2xl hover:scale-105 transition duration-500"
+            />
 
           </div>
 
@@ -105,18 +106,18 @@ export default async function MoviePage({ params }: Props) {
             </div>
 
             {/* Movie Info */}
-            <div className="flex flex-wrap gap-6 mt-8 text-sm text-zinc-300">
+            <div className="flex flex-wrap gap-4 mt-8 text-sm text-zinc-300">
 
-              <div>
+              <div className="bg-zinc-900/80 backdrop-blur-md border border-zinc-800 px-5 py-3 rounded-full">
                 ⭐ Rating: {movie.vote_average?.toFixed(1)}
               </div>
 
-              <div>
-                📅 Release: {movie.release_date}
+              <div className="bg-zinc-900/80 backdrop-blur-md border border-zinc-800 px-5 py-3 rounded-full">
+                📅 {movie.release_date}
               </div>
 
-              <div>
-                🎬 Runtime: {movie.runtime} mins
+              <div className="bg-zinc-900/80 backdrop-blur-md border border-zinc-800 px-5 py-3 rounded-full">
+                🎬 {movie.runtime} mins
               </div>
 
             </div>
@@ -153,7 +154,7 @@ export default async function MoviePage({ params }: Props) {
               <img
                 src={`https://image.tmdb.org/t/p/w500${item.poster_path}`}
                 alt={item.title}
-                className="rounded-xl mb-3 group-hover:scale-105 transition"
+                className="rounded-xl mb-3 group-hover:scale-105 transition duration-300"
               />
 
               <h3 className="font-semibold text-sm">

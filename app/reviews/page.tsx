@@ -50,7 +50,7 @@ export default async function ReviewsPage() {
             <a
               key={review.id}
               href={`/movie/${review.movie_id}`}
-              className="flex gap-5 border border-zinc-800 rounded-xl p-5 hover:border-red-500 transition bg-zinc-950/40 backdrop-blur-md"
+                className="flex gap-5 border border-zinc-800 rounded-xl p-5 hover:border-red-500 hover:-translate-y-1 hover:shadow-[0_0_30px_rgba(220,38,38,0.25)] transition duration-300 bg-zinc-950/40 backdrop-blur-md" 
             >
 
               {/* Poster */}
