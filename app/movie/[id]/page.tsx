@@ -1,3 +1,4 @@
+import BackButton from "@/app/components/BackButton";
 import ReviewSection from "@/app/components/ReviewSection";
 
 type Props = {
@@ -62,6 +63,7 @@ export default async function MoviePage({ params }: Props) {
 
       {/* Content */}
       <div className="max-w-7xl mx-auto px-6 py-10 relative -mt-52 z-10">
+        <BackButton />
 
         <div className="grid md:grid-cols-[300px_1fr] gap-10">
 
