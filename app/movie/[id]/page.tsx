@@ -1,3 +1,5 @@
+import ReviewSection from "@/app/components/ReviewSection";
+
 type Props = {
   params: Promise<{
     id: string;
@@ -20,7 +22,6 @@ async function getMovie(id: string) {
 }
 
 export default async function MoviePage({ params }: Props) {
-
   const { id } = await params;
 
   const movie = await getMovie(id);
@@ -91,6 +92,9 @@ export default async function MoviePage({ params }: Props) {
           </div>
 
         </div>
+
+        {/* Review Section */}
+        <ReviewSection movieId={id} />
 
       </div>
 
