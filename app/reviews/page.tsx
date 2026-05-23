@@ -15,6 +15,7 @@ async function getReviews() {
 }
 
 export default async function ReviewsPage() {
+
   const reviews = await getReviews();
 
   return (
@@ -27,32 +28,46 @@ export default async function ReviewsPage() {
         </h1>
 
         <div className="space-y-6">
-         {reviews.length === 0 && (
-  <div className="text-center py-20">
 
-    <h2 className="text-3xl font-bold mb-4">
-      No Reviews Yet
-    </h2>
+          {/* Empty State */}
+          {reviews.length === 0 && (
+            <div className="text-center py-20">
 
-    <p className="text-zinc-500">
-      Be the first person to review a movie.
-    </p>
+              <h2 className="text-3xl font-bold mb-4">
+                No Reviews Yet
+              </h2>
 
-  </div>
-)}   
+              <p className="text-zinc-500">
+                Be the first person to review a movie.
+              </p>
+
+            </div>
+          )}
+
+          {/* Reviews */}
           {reviews.map((review: any) => (
             <a
               key={review.id}
               href={`/movie/${review.movie_id}`}
-              className="flex gap-5 border border-zinc-800 rounded-xl p-5 hover:border-red-500 transition"
+              className="flex gap-5 border border-zinc-800 rounded-xl p-5 hover:border-red-500 transition bg-zinc-950/40 backdrop-blur-md"
             >
 
               {/* Poster */}
-              <img
-                src={`https://image.tmdb.org/t/p/w200${review.poster_path}`}
-                alt={review.movie_title}
-                className="w-24 rounded-lg object-cover"
-              />
+              {review.poster_path ? (
+
+                <img
+                  src={`https://image.tmdb.org/t/p/w200${review.poster_path}`}
+                  alt={review.movie_title}
+                  className="w-24 h-36 rounded-lg object-cover"
+                />
+
+              ) : (
+
+                <div className="w-24 h-36 bg-zinc-800 rounded-lg flex items-center justify-center text-zinc-500 text-xs text-center p-2">
+                  No Poster
+                </div>
+
+              )}
 
               {/* Content */}
               <div className="flex-1">
