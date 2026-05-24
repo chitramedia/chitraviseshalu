@@ -1,126 +1,85 @@
+import { Metadata } from "next";
+import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
 import BackButton from "../components/BackButton";
-export const dynamic = "force-dynamic";
-
+import ReviewList from "../components/ReviewList";
 import { supabase } from "../lib/supabase";
 
-async function getReviews() {
+export const dynamic = "force-dynamic";
 
+export const metadata: Metadata = {
+  title: "Audience Reviews & Movie Ratings | Chitra Viseshalu",
+  description: "Browse what cinema lovers are saying. Discover honest reviews, comprehensive star ratings, screenplay analyses, and discussions on latest films.",
+  openGraph: {
+    title: "Audience Reviews & Movie Ratings | Chitra Viseshalu",
+    description: "Honest movie reviews and community ratings for latest theatrical and OTT releases.",
+    type: "website",
+    url: "https://chitraviseshalu.com/reviews",
+  },
+};
+
+async function getReviews() {
   const { data, error } = await supabase
     .from("reviews")
     .select("*")
     .order("created_at", { ascending: false });
 
   if (error) {
-    console.log(error);
+    console.error("Error fetching reviews:", error);
     return [];
   }
 
-  return data;
+  return data || [];
 }
 
 export default async function ReviewsPage() {
-
   const reviews = await getReviews();
 
+  // JSON-LD Structured Data for User Reviews aggregate
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": "Chitra Viseshalu Audience Reviews Feed",
+    "description": "Reviews and ratings submitted by the Chitra Viseshalu community.",
+    "url": "https://chitraviseshalu.com/reviews"
+  };
+
   return (
-    <main className="min-h-screen bg-black text-white px-6 py-10">
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
 
-      <div className="max-w-5xl mx-auto">
-        <BackButton />
+      <Navbar />
 
-        <h1 className="text-4xl font-bold mb-8">
-          Community Reviews
-        </h1>
+      <main className="min-h-screen bg-black text-white px-4 md:px-6 py-10">
+        <div className="max-w-6xl mx-auto space-y-8">
+          <div className="flex items-center justify-between">
+            <BackButton />
+          </div>
 
-        <div className="space-y-6">
+          {/* Heading Section */}
+          <header className="space-y-3">
+            <p className="uppercase tracking-[0.2em] text-red-500 font-bold text-xs">
+              Audience Speak
+            </p>
+            <h1 className="text-4xl md:text-5xl font-black tracking-tight bg-gradient-to-r from-white to-zinc-400 bg-clip-text text-transparent">
+              Community Reviews & Feed
+            </h1>
+            <p className="text-zinc-400 text-sm max-w-2xl leading-relaxed">
+              Explore reactions from cinema fans, ratings breakdowns, and check out what movies are currently earning the community's applause.
+            </p>
+          </header>
 
-          {/* Empty State */}
-          {reviews.length === 0 && (
-            <div className="text-center py-20">
-
-              <h2 className="text-3xl font-bold mb-4">
-                No Reviews Yet
-              </h2>
-
-              <p className="text-zinc-500">
-                Be the first person to review a movie.
-              </p>
-
-            </div>
-          )}
-
-          {/* Reviews */}
-          {reviews.map((review: any) => (
-            <a
-              key={review.id}
-              href={`/movie/${review.movie_id}`}
-              className="flex gap-5 border border-zinc-800 rounded-xl p-5 hover:border-red-500 hover:-translate-y-1 hover:shadow-[0_0_30px_rgba(220,38,38,0.25)] transition duration-300 bg-zinc-950/40 backdrop-blur-md"
-            >
-
-              {/* Poster */}
-              {review.poster_path ? (
-
-                <img
-                  src={`https://image.tmdb.org/t/p/w200${review.poster_path}`}
-                  alt={review.movie_title}
-                  className="w-24 h-36 rounded-lg object-cover"
-                />
-
-              ) : (
-
-                <div className="w-24 h-36 bg-zinc-800 rounded-lg flex items-center justify-center text-zinc-500 text-xs text-center p-2">
-                  No Poster
-                </div>
-
-              )}
-
-              {/* Content */}
-              <div className="flex-1">
-
-                <div className="flex justify-between items-start mb-3">
-
-                  <div>
-
-                    <h2 className="text-xl font-bold">
-                      {review.movie_title}
-                    </h2>
-
-                    <p className="text-sm text-red-500 mt-1">
-                      {review.user_email || "Anonymous User"}
-                    </p>
-
-                    <p className="text-zinc-500 text-sm mt-1">
-                      {new Date(review.created_at).toLocaleString()}
-                    </p>
-
-                  </div>
-
-                  {/* Stars */}
-                  <div className="flex text-yellow-400 text-xl">
-
-                    {[1, 2, 3, 4, 5].map((star) => (
-                      <span key={star}>
-                        {review.rating >= star ? "★" : "☆"}
-                      </span>
-                    ))}
-
-                  </div>
-
-                </div>
-
-                <p className="text-zinc-300 leading-relaxed">
-                  {review.review_text}
-                </p>
-
-              </div>
-
-            </a>
-          ))}
-
+          {/* Review List Wrapper */}
+          <section aria-label="Review feed section">
+            <ReviewList initialReviews={reviews} />
+          </section>
         </div>
+      </main>
 
-      </div>
-
-    </main>
+      <Footer />
+    </>
   );
 }

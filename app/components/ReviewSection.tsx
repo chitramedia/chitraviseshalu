@@ -19,26 +19,56 @@ type Review = {
   user_email: string;
 };
 
+interface ReviewData {
+  text: string;
+  criteria?: {
+    story: number;
+    acting: number;
+    direction: number;
+    music: number;
+    visuals: number;
+  };
+}
+
+function parseReviewText(text: string): ReviewData {
+  if (text && text.trim().startsWith("{\"text\":") || text && text.trim().startsWith("{\"reviewText\":")) {
+    try {
+      const parsed = JSON.parse(text);
+      return {
+        text: parsed.text || parsed.reviewText,
+        criteria: parsed.criteria || parsed.breakdown
+      };
+    } catch {
+      return { text };
+    }
+  }
+  return { text };
+}
+
 export default function ReviewSection({
   movieId,
   movieTitle,
   posterPath,
 }: Props) {
-
   const [reviews, setReviews] = useState<Review[]>([]);
-  const [review, setReview] = useState("");
+  const [reviewText, setReviewText] = useState("");
   const [rating, setRating] = useState(5);
+  const [loading, setLoading] = useState(false);
+
+  // Ratings breakdown states
+  const [showDetailed, setShowDetailed] = useState(false);
+  const [storyRating, setStoryRating] = useState(5);
+  const [actingRating, setActingRating] = useState(5);
+  const [directionRating, setDirectionRating] = useState(5);
+  const [musicRating, setMusicRating] = useState(5);
+  const [visualsRating, setVisualsRating] = useState(5);
 
   const fetchReviews = async () => {
-
     const { data, error } = await supabase
       .from("reviews")
       .select("*")
       .eq("movie_id", movieId)
       .order("created_at", { ascending: false });
-
-    console.log("FETCH DATA:", data);
-    console.log("FETCH ERROR:", error);
 
     if (!error && data) {
       setReviews(data);
@@ -47,10 +77,17 @@ export default function ReviewSection({
 
   useEffect(() => {
     fetchReviews();
-  }, []);
+  }, [movieId]);
+
+  // Recalculate average rating if detailed rating changes
+  useEffect(() => {
+    if (showDetailed) {
+      const avg = Math.round((storyRating + actingRating + directionRating + musicRating + visualsRating) / 5);
+      setRating(avg);
+    }
+  }, [storyRating, actingRating, directionRating, musicRating, visualsRating, showDetailed]);
 
   const submitReview = async () => {
-
     const {
       data: { user },
     } = await supabase.auth.getUser();
@@ -60,135 +97,302 @@ export default function ReviewSection({
       return;
     }
 
-    if (!review) {
+    if (!reviewText.trim()) {
       alert("Please write a review");
       return;
     }
 
-    const { data, error } = await supabase
-      .from("reviews")
-      .insert([
-        {
-          movie_id: movieId,
-          movie_title: movieTitle,
-          poster_path: posterPath,
-          review_text: review,
-          rating,
-          user_email: user.email,
-        },
-      ]);
+    setLoading(true);
 
-    console.log("SUBMIT DATA:", data);
-    console.log("SUBMIT ERROR:", error);
+    let finalReviewText = reviewText;
+
+    if (showDetailed) {
+      // Serialize the multi-criteria review
+      const serialized = {
+        text: reviewText,
+        criteria: {
+          story: storyRating,
+          acting: actingRating,
+          direction: directionRating,
+          music: musicRating,
+          visuals: visualsRating,
+        },
+      };
+      finalReviewText = JSON.stringify(serialized);
+    }
+
+    const { error } = await supabase.from("reviews").insert([
+      {
+        movie_id: movieId,
+        movie_title: movieTitle,
+        poster_path: posterPath,
+        review_text: finalReviewText,
+        rating,
+        user_email: user.email,
+      },
+    ]);
+
+    setLoading(false);
 
     if (error) {
       alert(error.message);
       return;
     }
 
-    alert("Review submitted!");
-
-    setReview("");
+    alert("Review submitted successfully!");
+    setReviewText("");
     setRating(5);
-
+    setStoryRating(5);
+    setActingRating(5);
+    setDirectionRating(5);
+    setMusicRating(5);
+    setVisualsRating(5);
+    setShowDetailed(false);
     fetchReviews();
   };
 
   return (
-    <div className="mt-10">
+    <div className="mt-16 space-y-8 border-t border-zinc-900 pt-10">
+      <div className="flex justify-between items-center">
+        <h2 className="text-2xl md:text-3xl font-black text-white">Community Reviews</h2>
+        <span className="bg-zinc-900 border border-zinc-800 px-3.5 py-1.5 rounded-xl text-xs text-zinc-400">
+          {reviews.length} {reviews.length === 1 ? "Review" : "Reviews"}
+        </span>
+      </div>
 
-      <h2 className="text-2xl font-bold mb-4">
-        Community Reviews
-      </h2>
+      {/* Review Submission Card */}
+      <div className="bg-zinc-950/40 border border-zinc-900 p-6 rounded-3xl backdrop-blur-md space-y-6">
+        <h3 className="font-bold text-lg text-white">Add Your Critique</h3>
 
-      <div className="space-y-4 mb-6">
+        <div className="space-y-4">
+          <textarea
+            placeholder="Write your movie review here... What did you like or dislike?"
+            value={reviewText}
+            onChange={(e) => setReviewText(e.target.value)}
+            rows={4}
+            className="w-full p-4 rounded-xl bg-zinc-900 border border-zinc-800 text-white placeholder-zinc-500 focus:outline-none focus:border-red-500 transition text-sm leading-relaxed"
+          />
 
-        <textarea
-          placeholder="Write your review..."
-          value={review}
-          onChange={(e) => setReview(e.target.value)}
-          className="w-full p-3 rounded bg-gray-900 border border-gray-700"
-        />
-
-        {/* Interactive Star Rating */}
-        <div className="flex gap-2 text-3xl">
-
-          {[1, 2, 3, 4, 5].map((star) => (
+          {/* Upgrade Choice */}
+          <div className="flex items-center gap-3">
             <button
-              key={star}
               type="button"
-              onClick={() => setRating(star)}
-              className={`transition ${
-                rating >= star
-                  ? "text-yellow-400"
-                  : "text-zinc-600"
+              onClick={() => setShowDetailed(!showDetailed)}
+              className={`text-xs px-4 py-2 rounded-xl border transition ${
+                showDetailed
+                  ? "bg-red-600/20 border-red-500 text-red-500"
+                  : "bg-zinc-900 border-zinc-800 text-zinc-400 hover:text-white"
               }`}
             >
-              ★
+              {showDetailed ? "✨ Simple Rating Mode" : "✨ Write Detailed Breakdown"}
             </button>
-          ))}
-
-        </div>
-
-        <button
-          onClick={submitReview}
-          className="bg-red-600 hover:bg-red-700 px-5 py-3 rounded font-semibold transition duration-300"
-        >
-          Submit Review
-        </button>
-
-      </div>
-
-      <div className="space-y-4">
-
-        {reviews.length === 0 && (
-          <p className="text-gray-400">
-            No reviews yet.
-          </p>
-        )}
-
-        {reviews.map((item) => (
-          <div
-            key={item.id}
-            className="border border-gray-800 rounded-xl p-4 bg-zinc-950/40 backdrop-blur-md hover:border-red-500 hover:-translate-y-1 hover:shadow-[0_0_30px_rgba(220,38,38,0.25)] transition duration-300"
-          >
-
-            <div className="flex justify-between items-center mb-2">
-
-              <div>
-
-                <h3 className="font-bold">
-                  {item.user_email || "Anonymous User"}
-                </h3>
-
-                <p className="text-xs text-zinc-500">
-                  {new Date(item.created_at).toLocaleString()}
-                </p>
-
-              </div>
-
-              {/* Review Stars */}
-              <div className="flex text-yellow-400 text-xl">
-
-                {[1, 2, 3, 4, 5].map((star) => (
-                  <span key={star}>
-                    {item.rating >= star ? "★" : "☆"}
-                  </span>
-                ))}
-
-              </div>
-
-            </div>
-
-            <p className="text-gray-300">
-              {item.review_text}
-            </p>
-
           </div>
-        ))}
 
+          {/* Simple star rating */}
+          {!showDetailed ? (
+            <div className="space-y-2">
+              <span className="text-xs font-semibold text-zinc-500 uppercase tracking-wider block">
+                Overall Score: {rating}/5
+              </span>
+              <div className="flex gap-1.5 text-3xl">
+                {[1, 2, 3, 4, 5].map((star) => (
+                  <button
+                    key={star}
+                    type="button"
+                    onClick={() => setRating(star)}
+                    className={`transition duration-150 transform hover:scale-110 ${
+                      rating >= star ? "text-yellow-400" : "text-zinc-700"
+                    }`}
+                  >
+                    ★
+                  </button>
+                ))}
+              </div>
+            </div>
+          ) : (
+            // Detailed Sliders
+            <div className="bg-zinc-900/40 p-5 rounded-2xl border border-zinc-900 space-y-4 grid sm:grid-cols-2 gap-4">
+              <div className="col-span-full pb-2 border-b border-zinc-850 flex justify-between items-center">
+                <span className="text-xs font-bold text-zinc-400 uppercase tracking-wider">
+                  Ratings Breakdown
+                </span>
+                <span className="text-xs bg-yellow-600/20 text-yellow-400 px-3 py-1 rounded-full font-bold">
+                  Computed Overall: {rating} ★
+                </span>
+              </div>
+
+              {/* Story */}
+              <div className="space-y-1">
+                <div className="flex justify-between text-xs font-semibold text-zinc-400">
+                  <span>Screenplay & Story</span>
+                  <span className="text-yellow-400">{storyRating} ★</span>
+                </div>
+                <input
+                  type="range"
+                  min="1"
+                  max="5"
+                  value={storyRating}
+                  onChange={(e) => setStoryRating(parseInt(e.target.value))}
+                  className="w-full accent-red-600 bg-zinc-800 rounded-lg appearance-none h-1.5 cursor-pointer"
+                />
+              </div>
+
+              {/* Acting */}
+              <div className="space-y-1">
+                <div className="flex justify-between text-xs font-semibold text-zinc-400">
+                  <span>Acting & Performances</span>
+                  <span className="text-yellow-400">{actingRating} ★</span>
+                </div>
+                <input
+                  type="range"
+                  min="1"
+                  max="5"
+                  value={actingRating}
+                  onChange={(e) => setActingRating(parseInt(e.target.value))}
+                  className="w-full accent-red-600 bg-zinc-800 rounded-lg appearance-none h-1.5 cursor-pointer"
+                />
+              </div>
+
+              {/* Direction */}
+              <div className="space-y-1">
+                <div className="flex justify-between text-xs font-semibold text-zinc-400">
+                  <span>Direction & Cinematography</span>
+                  <span className="text-yellow-400">{directionRating} ★</span>
+                </div>
+                <input
+                  type="range"
+                  min="1"
+                  max="5"
+                  value={directionRating}
+                  onChange={(e) => setDirectionRating(parseInt(e.target.value))}
+                  className="w-full accent-red-600 bg-zinc-800 rounded-lg appearance-none h-1.5 cursor-pointer"
+                />
+              </div>
+
+              {/* Music */}
+              <div className="space-y-1">
+                <div className="flex justify-between text-xs font-semibold text-zinc-400">
+                  <span>Music & Soundtrack</span>
+                  <span className="text-yellow-400">{musicRating} ★</span>
+                </div>
+                <input
+                  type="range"
+                  min="1"
+                  max="5"
+                  value={musicRating}
+                  onChange={(e) => setMusicRating(parseInt(e.target.value))}
+                  className="w-full accent-red-600 bg-zinc-800 rounded-lg appearance-none h-1.5 cursor-pointer"
+                />
+              </div>
+
+              {/* Visuals */}
+              <div className="space-y-1 sm:col-span-full">
+                <div className="flex justify-between text-xs font-semibold text-zinc-400">
+                  <span>Visual Effects / CGI</span>
+                  <span className="text-yellow-400">{visualsRating} ★</span>
+                </div>
+                <input
+                  type="range"
+                  min="1"
+                  max="5"
+                  value={visualsRating}
+                  onChange={(e) => setVisualsRating(parseInt(e.target.value))}
+                  className="w-full accent-red-600 bg-zinc-800 rounded-lg appearance-none h-1.5 cursor-pointer"
+                />
+              </div>
+            </div>
+          )}
+
+          <div className="pt-2">
+            <button
+              onClick={submitReview}
+              disabled={loading}
+              className="bg-red-600 hover:bg-red-700 disabled:opacity-50 font-bold px-6 py-3.5 rounded-xl transition duration-300 shadow-[0_0_15px_rgba(220,38,38,0.4)]"
+            >
+              {loading ? "Submitting Critique..." : "Submit Review"}
+            </button>
+          </div>
+        </div>
       </div>
 
+      {/* Review List */}
+      <div className="space-y-6">
+        {reviews.length === 0 ? (
+          <div className="text-center py-10 bg-zinc-950/20 border border-zinc-900 rounded-2xl text-zinc-500 italic text-sm">
+            No reviews yet. Be the first to express your thoughts!
+          </div>
+        ) : (
+          reviews.map((item) => {
+            const parsed = parseReviewText(item.review_text);
+
+            return (
+              <div
+                key={item.id}
+                className="bg-zinc-950/30 border border-zinc-900 rounded-3xl p-5 md:p-6 space-y-4 hover:border-zinc-800 transition duration-300"
+              >
+                <div className="flex justify-between items-start gap-4">
+                  <div>
+                    <h4 className="font-bold text-white text-base">
+                      {item.user_email ? item.user_email.split("@")[0] : "Anonymous Critic"}
+                    </h4>
+                    <span className="text-[10px] text-zinc-500 block mt-0.5">
+                      {new Date(item.created_at).toLocaleString()}
+                    </span>
+                  </div>
+
+                  <div className="flex flex-col items-end">
+                    <div className="flex text-yellow-400 text-lg">
+                      {[1, 2, 3, 4, 5].map((star) => (
+                        <span key={star}>{item.rating >= star ? "★" : "☆"}</span>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Show Criteria Breakdown if exists */}
+                {parsed.criteria && (
+                  <div className="grid grid-cols-2 sm:grid-cols-5 gap-3 bg-zinc-900/30 p-3 rounded-xl border border-zinc-900/60 text-xs">
+                    {parsed.criteria.story > 0 && (
+                      <div>
+                        <span className="text-zinc-500 block">Screenplay</span>
+                        <span className="text-yellow-400 font-semibold">{parsed.criteria.story} ★</span>
+                      </div>
+                    )}
+                    {parsed.criteria.acting > 0 && (
+                      <div>
+                        <span className="text-zinc-500 block">Acting</span>
+                        <span className="text-yellow-400 font-semibold">{parsed.criteria.acting} ★</span>
+                      </div>
+                    )}
+                    {parsed.criteria.direction > 0 && (
+                      <div>
+                        <span className="text-zinc-500 block">Direction</span>
+                        <span className="text-yellow-400 font-semibold">{parsed.criteria.direction} ★</span>
+                      </div>
+                    )}
+                    {parsed.criteria.music > 0 && (
+                      <div>
+                        <span className="text-zinc-500 block">Music</span>
+                        <span className="text-yellow-400 font-semibold">{parsed.criteria.music} ★</span>
+                      </div>
+                    )}
+                    {parsed.criteria.visuals > 0 && (
+                      <div>
+                        <span className="text-zinc-500 block">Visuals</span>
+                        <span className="text-yellow-400 font-semibold">{parsed.criteria.visuals} ★</span>
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                <p className="text-zinc-300 text-sm leading-relaxed whitespace-pre-line">
+                  {parsed.text}
+                </p>
+              </div>
+            );
+          })
+        )}
+      </div>
     </div>
   );
 }

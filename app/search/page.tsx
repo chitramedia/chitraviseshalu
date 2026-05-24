@@ -1,5 +1,6 @@
 import Link from "next/link";
 import SearchBar from "../components/SearchBar";
+import BackButton from "../components/BackButton";
 
 async function searchMovies(query: string) {
 
@@ -37,6 +38,7 @@ export default async function SearchPage({ searchParams }: Props) {
     <main className="min-h-screen bg-black text-white px-6 py-12">
 
       <div className="max-w-7xl mx-auto">
+        <BackButton />
 
         {/* Hero */}
         <div className="mb-14 text-center">

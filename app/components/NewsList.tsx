@@ -1,0 +1,168 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import Link from "next/link";
+import { getNewsArticles, NewsArticle } from "../lib/newsData";
+
+export default function NewsList() {
+  const [articles, setArticles] = useState<NewsArticle[]>([]);
+  const [activeCategory, setActiveCategory] = useState<string>("All");
+  const [searchQuery, setSearchQuery] = useState<string>("");
+
+  useEffect(() => {
+    setArticles(getNewsArticles());
+  }, []);
+
+  const categories = ["All", "Tollywood", "Bollywood", "Hollywood", "OTT", "Box Office"];
+
+  const filteredArticles = articles.filter((article) => {
+    const matchesCategory = activeCategory === "All" || article.category === activeCategory;
+    const matchesSearch =
+      article.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      article.summary.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      article.content.toLowerCase().includes(searchQuery.toLowerCase());
+    return matchesCategory && matchesSearch;
+  });
+
+  return (
+    <div className="space-y-10">
+      {/* Search and Category Filters */}
+      <div className="flex flex-col md:flex-row gap-5 justify-between items-center bg-zinc-950/60 p-6 rounded-2xl border border-zinc-800 backdrop-blur-md">
+        {/* Categories */}
+        <div className="flex flex-wrap gap-2 w-full md:w-auto">
+          {categories.map((category) => (
+            <button
+              key={category}
+              onClick={() => setActiveCategory(category)}
+              className={`px-4 py-2 rounded-xl text-xs md:text-sm font-semibold transition duration-300 ${
+                activeCategory === category
+                  ? "bg-red-600 text-white shadow-[0_0_15px_rgba(220,38,38,0.4)]"
+                  : "bg-zinc-900 text-zinc-400 hover:text-white hover:bg-zinc-800"
+              }`}
+            >
+              {category}
+            </button>
+          ))}
+        </div>
+
+        {/* Search */}
+        <div className="relative w-full md:w-80">
+          <input
+            type="text"
+            placeholder="Search news..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="w-full bg-zinc-900 border border-zinc-800 rounded-xl pl-10 pr-4 py-3 text-sm text-white focus:outline-none focus:border-red-500 transition duration-300"
+          />
+          <span className="absolute left-3 top-3.5 text-zinc-500">🔍</span>
+        </div>
+      </div>
+
+      {/* Featured Headline */}
+      {filteredArticles.length > 0 && searchQuery === "" && activeCategory === "All" && (
+        <div className="group relative rounded-3xl overflow-hidden border border-zinc-850 bg-gradient-to-br from-zinc-900/50 to-black hover:border-red-500/50 transition duration-500 shadow-[0_4px_30px_rgba(0,0,0,0.8)]">
+          <Link href={`/news/${filteredArticles[0].id}`} className="grid md:grid-cols-2 gap-0 md:gap-6">
+            <div className="relative h-64 md:h-[400px] overflow-hidden">
+              <img
+                src={filteredArticles[0].image}
+                alt={filteredArticles[0].title}
+                className="w-full h-full object-cover group-hover:scale-105 transition duration-700"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t md:bg-gradient-to-r from-black via-black/40 to-transparent"></div>
+              <div className="absolute top-4 left-4 bg-red-600 text-white font-bold text-xs uppercase px-3 py-1 rounded-full tracking-wider shadow-lg">
+                🔥 Hot Update
+              </div>
+            </div>
+            <div className="p-8 flex flex-col justify-center space-y-4">
+              <span className="text-red-500 text-xs font-semibold uppercase tracking-widest">
+                {filteredArticles[0].category} &bull; {filteredArticles[0].readTime}
+              </span>
+              <h2 className="text-3xl md:text-4xl font-extrabold text-white group-hover:text-red-500 transition duration-300 leading-tight">
+                {filteredArticles[0].title}
+              </h2>
+              <p className="text-zinc-400 text-sm md:text-base leading-relaxed">
+                {filteredArticles[0].summary}
+              </p>
+              <div className="flex items-center gap-3 pt-4">
+                <span className="w-8 h-8 rounded-full bg-zinc-800 flex items-center justify-center text-lg">
+                  {filteredArticles[0].author.avatar}
+                </span>
+                <div>
+                  <div className="text-sm font-semibold text-white">{filteredArticles[0].author.name}</div>
+                  <div className="text-xs text-zinc-500">{filteredArticles[0].author.role}</div>
+                </div>
+                <div className="ml-auto text-xs text-zinc-500">
+                  {new Date(filteredArticles[0].publishedAt).toLocaleDateString()}
+                </div>
+              </div>
+            </div>
+          </Link>
+        </div>
+      )}
+
+      {/* Grid of articles */}
+      {filteredArticles.length === 0 ? (
+        <div className="text-center py-20 bg-zinc-950/40 rounded-3xl border border-zinc-900">
+          <span className="text-5xl block mb-4">📰</span>
+          <h3 className="text-2xl font-bold text-white mb-2">No News Found</h3>
+          <p className="text-zinc-500 text-sm">We couldn't find any articles matching your filters.</p>
+        </div>
+      ) : (
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {filteredArticles
+            .slice(searchQuery === "" && activeCategory === "All" ? 1 : 0)
+            .map((article) => (
+              <article
+                key={article.id}
+                className="group flex flex-col justify-between bg-zinc-950/40 border border-zinc-900 hover:border-red-600/40 rounded-2xl overflow-hidden hover:-translate-y-2 hover:shadow-[0_0_30px_rgba(220,38,38,0.15)] transition duration-300"
+              >
+                <div>
+                  <div className="relative h-48 overflow-hidden bg-zinc-900">
+                    <img
+                      src={article.image}
+                      alt={article.title}
+                      className="w-full h-full object-cover group-hover:scale-105 transition duration-550"
+                    />
+                    <div className="absolute top-3 left-3 bg-black/75 backdrop-blur-md text-red-500 font-bold text-xs uppercase px-3 py-1 rounded-full tracking-wider border border-zinc-800">
+                      {article.category}
+                    </div>
+                  </div>
+
+                  <div className="p-5 space-y-3">
+                    <div className="text-xs text-zinc-500 flex justify-between">
+                      <span>{article.readTime}</span>
+                      <span>{new Date(article.publishedAt).toLocaleDateString()}</span>
+                    </div>
+                    <Link href={`/news/${article.id}`}>
+                      <h3 className="font-bold text-lg text-white group-hover:text-red-500 line-clamp-2 transition leading-snug">
+                        {article.title}
+                      </h3>
+                    </Link>
+                    <p className="text-zinc-400 text-sm line-clamp-3 leading-relaxed">
+                      {article.summary}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="p-5 pt-0 border-t border-zinc-900/50 flex items-center gap-3">
+                  <span className="w-6 h-6 rounded-full bg-zinc-900 flex items-center justify-center text-sm">
+                    {article.author.avatar}
+                  </span>
+                  <div>
+                    <div className="text-xs font-semibold text-zinc-300">{article.author.name}</div>
+                    <div className="text-[10px] text-zinc-500">{article.author.role}</div>
+                  </div>
+                  <Link
+                    href={`/news/${article.id}`}
+                    className="ml-auto text-xs text-red-500 font-semibold group-hover:text-red-400 flex items-center gap-1 transition"
+                  >
+                    Read More <span className="group-hover:translate-x-1 transition duration-200">➔</span>
+                  </Link>
+                </div>
+              </article>
+            ))}
+        </div>
+      )}
+    </div>
+  );
+}

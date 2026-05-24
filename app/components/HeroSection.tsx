@@ -1,3 +1,5 @@
+import FeaturedAnnouncement from "./FeaturedAnnouncement";
+
 async function getTrendingMovie() {
   const response = await fetch(
     "https://api.themoviedb.org/3/trending/movie/day",
@@ -39,6 +41,9 @@ export default async function HeroSection() {
 
       {/* Content */}
       <div className="relative z-10 max-w-7xl mx-auto px-6">
+
+        {/* Featured Announcement */}
+        <FeaturedAnnouncement />
 
         {/* Tag */}
         <p className="uppercase tracking-[0.3em] text-red-500 text-sm mb-4">

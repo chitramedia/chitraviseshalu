@@ -46,10 +46,24 @@ export default function Footer() {
               </a>
 
               <a
+                href="/news"
+                className="hover:text-red-500 transition"
+              >
+                Cinema News
+              </a>
+
+              <a
                 href="/search"
                 className="hover:text-red-500 transition"
               >
                 Search Movies
+              </a>
+
+              <a
+                href="/admin"
+                className="hover:text-red-500 transition"
+              >
+                Admin Tools
               </a>
 
             </div>

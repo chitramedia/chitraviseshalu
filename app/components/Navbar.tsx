@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import AuthButtons from "./AuthButtons";
+import NotificationsDropdown from "./NotificationsDropdown";
 
 export default function Navbar() {
   return (
@@ -49,17 +50,17 @@ export default function Navbar() {
           </Link>
 
           <Link
-            href="#"
+            href="/news"
             className="hover:text-white hover:bg-zinc-900 px-4 py-2 rounded-xl transition duration-300"
           >
-            OTT
+            News
           </Link>
 
           <Link
-            href="#"
-            className="hover:text-white hover:bg-zinc-900 px-4 py-2 rounded-xl transition duration-300"
+            href="/admin"
+            className="hover:text-white hover:bg-zinc-900 px-4 py-2 rounded-xl transition duration-300 text-zinc-500 hover:text-red-400"
           >
-            Trending
+            Admin
           </Link>
 
           <Link
@@ -96,6 +97,9 @@ export default function Navbar() {
           >
             Search
           </Link>
+
+          {/* Notifications */}
+          <NotificationsDropdown />
 
           {/* Auth */}
           <AuthButtons />
