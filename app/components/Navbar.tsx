@@ -42,6 +42,13 @@ export default function Navbar() {
           </Link>
 
           <Link
+            href="/recommendations"
+            className="hover:text-white hover:bg-zinc-900 px-4 py-2 rounded-xl transition duration-300 text-red-500 font-semibold"
+          >
+            AI Recs
+          </Link>
+
+          <Link
             href="#"
             className="hover:text-white hover:bg-zinc-900 px-4 py-2 rounded-xl transition duration-300"
           >

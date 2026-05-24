@@ -28,6 +28,11 @@ export default function MobileBottomNav() {
       icon: "⭐",
     },
     {
+      name: "AI Recs",
+      href: "/recommendations",
+      icon: "✨",
+    },
+    {
       name: "Search",
       href: "/search",
       icon: "🔍",
@@ -42,7 +47,7 @@ export default function MobileBottomNav() {
   return (
     <div className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-black/90 backdrop-blur-xl border-t border-zinc-800">
 
-      <div className="grid grid-cols-4">
+      <div className="grid grid-cols-5">
 
         {navItems.map((item) => (
 
