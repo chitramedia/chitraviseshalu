@@ -5,6 +5,7 @@ import { supabase, getSessionUser } from "../lib/supabase";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import Link from "next/link";
+import RecommendationSkeleton from "../components/skeletons/RecommendationSkeleton";
 
 export default function RecommendationsPage() {
   const [user, setUser] = useState<any>(null);
@@ -128,28 +129,28 @@ export default function RecommendationsPage() {
 
   // Render Empty Taste Profile
   const renderEmptyProfile = () => (
-    <div className="text-center py-20 px-6 max-w-xl mx-auto">
-      <div className="w-20 h-20 bg-[#1A1A1A] rounded-full flex items-center justify-center mx-auto mb-8 border border-zinc-800/40">
-        <span className="text-4xl">🍿</span>
+    <div className="text-center py-20 px-6 max-w-xl mx-auto bg-[#1A1A1A] border border-zinc-800/30 rounded-3xl p-8 shadow-xl mt-12">
+      <div className="w-20 h-20 bg-[#111111] rounded-full flex items-center justify-center mx-auto mb-8 border border-zinc-800/40">
+        <span className="text-4xl">✨</span>
       </div>
       <h2 className="text-3xl font-extrabold mb-4 text-white">
-        Your Taste Profile is Empty
+        Start rating movies to unlock personalized recommendations.
       </h2>
-      <p className="text-zinc-450 mb-8 leading-relaxed">
-        We need a few details about what you like before the AI can generate recommendations! Add movies to your Watchlist or write a Review/Rating.
+      <p className="text-zinc-400 mb-8 leading-relaxed text-sm">
+        We need a few clues about your taste to initialize the AI engine. Add a few masterpieces to your watchlist or share your critiques to receive targeted recommendations.
       </p>
       <div className="flex gap-4 justify-center">
         <Link
           href="/search"
-          className="border border-white/20 hover:border-white hover:bg-white/10 text-white font-bold px-6 py-3.5 rounded-full transition duration-300 text-sm"
+          className="border border-white/20 hover:border-white hover:bg-white/10 text-white font-bold px-6 py-3 rounded-full transition duration-300 text-xs"
         >
           Search Movies
         </Link>
         <Link
           href="/"
-          className="bg-white hover:bg-zinc-200 text-[#111111] font-bold px-6 py-3.5 rounded-full transition duration-300 text-sm"
+          className="bg-white hover:bg-zinc-200 text-[#111111] font-bold px-6 py-3 rounded-full transition duration-300 text-xs"
         >
-          Explore Trending
+          View Trending Now
         </Link>
       </div>
     </div>
@@ -157,11 +158,27 @@ export default function RecommendationsPage() {
 
   // Render Loading State
   const renderLoading = () => (
-    <div className="flex flex-col items-center justify-center py-32">
-      <div className="w-16 h-16 border-4 border-white/20 border-t-white rounded-full animate-spin mb-8"></div>
-      <p className="text-lg text-zinc-400 font-medium animate-pulse">
-        {loadingMessage}
-      </p>
+    <div className="space-y-12">
+      {/* Header Loading Status */}
+      <div className="flex flex-col items-center justify-center py-12 text-center bg-[#1A1A1A] border border-zinc-800/30 rounded-3xl p-8 max-w-xl mx-auto shadow-xl">
+        <div className="relative w-16 h-16 mb-6">
+          <div className="absolute inset-0 border-4 border-zinc-800 rounded-full"></div>
+          <div className="absolute inset-0 border-4 border-t-white rounded-full animate-spin"></div>
+        </div>
+        <h3 className="text-xs font-semibold text-white/50 uppercase tracking-widest mb-2">AI Cinema Engine</h3>
+        <p className="text-lg text-zinc-355 font-medium animate-pulse">
+          {loadingMessage}
+        </p>
+      </div>
+
+      {/* Simulated recommendation cards loading in the background */}
+      <div className="space-y-12 max-w-7xl mx-auto">
+        <h4 className="text-xs font-bold text-zinc-600 uppercase tracking-wider">Generating Recommendations</h4>
+        <div className="space-y-12">
+          <RecommendationSkeleton />
+          <RecommendationSkeleton />
+        </div>
+      </div>
     </div>
   );
 

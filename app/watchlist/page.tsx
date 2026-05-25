@@ -47,19 +47,23 @@ export default async function WatchlistPage() {
 
           {/* Empty State */}
           {movies.length === 0 && (
-
-            <div className="text-center py-20 bg-[#1A1A1A] rounded-3xl border border-zinc-800/30 shadow-[0_20px_50px_rgba(0,0,0,0.4)] max-w-xl mx-auto">
-              <span className="text-5xl block mb-4">🎬</span>
-              <h2 className="text-2xl font-bold mb-2">
-                Watchlist Empty
-              </h2>
-
-              <p className="text-zinc-400 text-sm">
-                Save movies to build your personal watchlist.
-              </p>
-
+            <div className="text-center py-16 bg-[#1A1A1A] rounded-3xl border border-zinc-800/30 shadow-[0_20px_50px_rgba(0,0,0,0.4)] max-w-xl mx-auto p-8 space-y-6">
+              <span className="text-5xl block animate-pulse">🍿</span>
+              <div className="space-y-2">
+                <h2 className="text-2xl font-extrabold text-white">
+                  Your watchlist is waiting for its first masterpiece.
+                </h2>
+                <p className="text-zinc-400 text-sm max-w-sm mx-auto leading-relaxed">
+                  Browse movies, read critiques, and save recommendations to customize your profile.
+                </p>
+              </div>
+              <Link
+                href="/search"
+                className="inline-block bg-white hover:bg-zinc-200 text-[#111111] font-bold px-6 py-3 rounded-full text-xs transition duration-300 shadow-md"
+              >
+                Find Movies to Add
+              </Link>
             </div>
-
           )}
 
           {/* Movies */}
