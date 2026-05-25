@@ -111,7 +111,7 @@ export default function EditProfile() {
   };
 
   return (
-    <div className="border border-zinc-900 rounded-3xl p-6 md:p-8 bg-zinc-950/40 backdrop-blur-md mb-14 space-y-6">
+    <div className="border border-zinc-800/30 rounded-3xl p-6 md:p-8 bg-[#1A1A1A] shadow-[0_20px_50px_rgba(0,0,0,0.5)] mb-14 space-y-6">
       <h2 className="text-2xl font-black text-white">Upgrade Profile Options</h2>
 
       <div className="grid md:grid-cols-2 gap-6">
@@ -126,7 +126,7 @@ export default function EditProfile() {
               placeholder="Enter display name"
               value={displayName}
               onChange={(e) => setDisplayName(e.target.value)}
-              className="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-4 py-3.5 outline-none focus:border-red-500 text-white text-sm transition"
+              className="w-full bg-[#111111]/85 border border-zinc-800/60 rounded-xl px-4 py-3.5 outline-none focus:border-white text-white text-sm transition"
             />
           </div>
 
@@ -139,7 +139,7 @@ export default function EditProfile() {
               placeholder="E.g. Hyderabad, India"
               value={location}
               onChange={(e) => setLocation(e.target.value)}
-              className="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-4 py-3.5 outline-none focus:border-red-500 text-white text-sm transition"
+              className="w-full bg-[#111111]/85 border border-zinc-800/60 rounded-xl px-4 py-3.5 outline-none focus:border-white text-white text-sm transition"
             />
           </div>
 
@@ -147,7 +147,7 @@ export default function EditProfile() {
             <label className="text-xs font-bold text-zinc-500 uppercase tracking-wider block mb-2">
               Avatar Icon
             </label>
-            <div className="flex flex-wrap gap-2.5 p-3.5 bg-zinc-900/60 border border-zinc-850 rounded-xl">
+            <div className="flex flex-wrap gap-2.5 p-3.5 bg-[#111111]/85 border border-zinc-800/40 rounded-xl">
               {avatars.map((av) => (
                 <button
                   key={av}
@@ -155,8 +155,8 @@ export default function EditProfile() {
                   onClick={() => setSelectedAvatar(av)}
                   className={`w-10 h-10 rounded-xl flex items-center justify-center text-xl transition duration-200 hover:scale-110 ${
                     selectedAvatar === av
-                      ? "bg-red-600 text-white border border-red-500 shadow-md shadow-red-650"
-                      : "bg-zinc-950 hover:bg-zinc-850 text-zinc-400 border border-zinc-900"
+                      ? "bg-white text-black font-bold border border-white shadow-md"
+                      : "bg-[#111111] hover:bg-[#1A1A1A] text-zinc-400 border border-zinc-800/50"
                   }`}
                 >
                   {av}
@@ -177,7 +177,7 @@ export default function EditProfile() {
               value={bio}
               onChange={(e) => setBio(e.target.value)}
               rows={4}
-              className="w-full bg-zinc-900 border border-zinc-800 rounded-xl p-4 outline-none focus:border-red-500 text-white text-sm transition leading-relaxed resize-none"
+              className="w-full bg-[#111111]/85 border border-zinc-800/60 rounded-xl p-4 outline-none focus:border-white text-white text-sm transition leading-relaxed resize-none"
             />
           </div>
 
@@ -195,8 +195,8 @@ export default function EditProfile() {
                     onClick={() => handleGenreToggle(genre)}
                     className={`px-3 py-1.5 rounded-lg text-xs font-semibold border transition ${
                       isSelected
-                        ? "bg-red-600/20 border-red-500 text-red-500"
-                        : "bg-zinc-900/60 border-zinc-850 text-zinc-400 hover:text-white"
+                        ? "bg-white/10 border-white text-white font-bold"
+                        : "bg-[#111111]/60 border-zinc-800/50 text-zinc-400 hover:text-white"
                     }`}
                   >
                     {genre}
@@ -208,11 +208,11 @@ export default function EditProfile() {
         </div>
       </div>
 
-      <div className="pt-4 border-t border-zinc-900/50 flex justify-end">
+      <div className="pt-4 border-t border-zinc-800/40 flex justify-end">
         <button
           onClick={saveProfile}
           disabled={loading}
-          className="bg-red-600 hover:bg-red-700 disabled:opacity-50 text-white font-bold px-6 py-3 rounded-xl text-sm transition duration-300 shadow-[0_0_15px_rgba(220,38,38,0.4)]"
+          className="bg-white hover:bg-zinc-200 disabled:opacity-50 text-[#111111] font-bold px-6 py-3.5 rounded-full text-sm transition duration-300 shadow-md"
         >
           {loading ? "Saving Profile..." : "Save Profile Details"}
         </button>

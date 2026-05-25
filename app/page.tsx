@@ -9,25 +9,30 @@ import ScrollTopButton from "./components/ScrollTopButton";
 
 export default function Home() {
   return (
-    <main className="bg-black text-white min-h-screen space-y-6">
+    <main className="bg-[#111111] text-white min-h-screen relative">
 
       <Navbar />
 
       <HeroSection />
 
-      {/* Community Poll Header Area */}
-      <section className="max-w-7xl mx-auto px-6 pt-10">
-        <CommunityPoll />
-      </section>
+      {/* The Seamless Dark Fade (The Content Workspace) */}
+      <div id="poll" className="bg-[#111111] relative z-20">
 
-      {/* Trending Movies carousel */}
-      <TrendingSection />
+        {/* Community Poll Header Area */}
+        <section className="max-w-7xl mx-auto px-6 pt-16">
+          <CommunityPoll />
+        </section>
 
-      {/* Short Gossip Drops / Mini Content Posts */}
-      <HomeNewsSection />
+        {/* Trending Movies carousel */}
+        <TrendingSection />
 
-      {/* Latest Community Reviews */}
-      <HomeReviewsSection />
+        {/* Short Gossip Drops / Mini Content Posts */}
+        <HomeNewsSection />
+
+        {/* Latest Community Reviews */}
+        <HomeReviewsSection />
+
+      </div>
 
       <Footer />
 

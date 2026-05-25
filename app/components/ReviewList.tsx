@@ -115,33 +115,33 @@ export default function ReviewList({ initialReviews }: Props) {
   return (
     <div className="space-y-8">
       {/* Review Hub Statistics Header */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 bg-zinc-950/60 p-6 rounded-3xl border border-zinc-900 backdrop-blur-md">
-        <div className="text-center md:border-r border-zinc-900 py-2">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 bg-[#1A1A1A] p-6 rounded-3xl border border-zinc-800/30 shadow-[0_20px_50px_rgba(0,0,0,0.5)]">
+        <div className="text-center md:border-r border-zinc-800/40 py-2">
           <p className="text-zinc-500 text-xs uppercase tracking-wider">Total Reviews</p>
           <p className="text-3xl font-extrabold text-white mt-1">{totalReviews}</p>
         </div>
-        <div className="text-center md:border-r border-zinc-900 py-2">
+        <div className="text-center md:border-r border-zinc-800/40 py-2">
           <p className="text-zinc-500 text-xs uppercase tracking-wider">Average Score</p>
           <p className="text-3xl font-extrabold text-yellow-400 mt-1">★ {averageRating}</p>
         </div>
-        <div className="text-center md:border-r border-zinc-900 py-2 col-span-2 md:col-span-2">
+        <div className="text-center md:border-r border-zinc-800/40 py-2 col-span-2 md:col-span-2">
           <p className="text-zinc-500 text-xs uppercase tracking-wider">Active Community Members</p>
-          <p className="text-3xl font-extrabold text-red-500 mt-1">
+          <p className="text-3xl font-extrabold text-white mt-1">
             {Array.from(new Set(reviews.map((r) => r.user_email))).length}
           </p>
         </div>
       </div>
 
       {/* Filter and Search Controls */}
-      <div className="flex flex-col lg:flex-row gap-4 justify-between items-center bg-zinc-950/40 p-5 rounded-2xl border border-zinc-900">
+      <div className="flex flex-col lg:flex-row gap-4 justify-between items-center bg-[#1A1A1A] p-5 rounded-2xl border border-zinc-800/30 shadow-[0_15px_35px_rgba(0,0,0,0.4)]">
         {/* Search */}
         <div className="relative w-full lg:w-96">
           <input
             type="text"
-            placeholder="Search reviews by movie title or username..."
+            placeholder="Search reviews by movie title..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full bg-zinc-900 border border-zinc-800 rounded-xl pl-10 pr-4 py-3 text-sm text-white focus:outline-none focus:border-red-500 transition duration-300"
+            className="w-full bg-[#111111]/80 border border-zinc-800/80 rounded-xl pl-10 pr-4 py-3 text-sm text-white focus:outline-none focus:border-white transition duration-300"
           />
           <span className="absolute left-3 top-3.5 text-zinc-500">🔍</span>
         </div>
@@ -152,8 +152,10 @@ export default function ReviewList({ initialReviews }: Props) {
           <div className="flex gap-1.5 overflow-x-auto py-1">
             <button
               onClick={() => setRatingFilter(null)}
-              className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition ${
-                ratingFilter === null ? "bg-red-600 text-white" : "bg-zinc-900 text-zinc-400 hover:bg-zinc-800"
+              className={`px-3 py-1.5 rounded-full text-xs font-semibold transition duration-300 ${
+                ratingFilter === null
+                  ? "bg-white text-[#111111] shadow-md font-bold"
+                  : "bg-[#111111]/80 text-zinc-400 hover:text-white hover:bg-[#1A1A1A]"
               }`}
             >
               All Ratings
@@ -162,8 +164,10 @@ export default function ReviewList({ initialReviews }: Props) {
               <button
                 key={stars}
                 onClick={() => setRatingFilter(stars)}
-                className={`px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1 transition ${
-                  ratingFilter === stars ? "bg-red-600 text-white" : "bg-zinc-900 text-zinc-400 hover:bg-zinc-800"
+                className={`px-3.5 py-1.5 rounded-full text-xs font-semibold flex items-center gap-1 transition duration-300 ${
+                  ratingFilter === stars
+                    ? "bg-white text-[#111111] shadow-md font-bold"
+                    : "bg-[#111111]/80 text-zinc-400 hover:text-white hover:bg-[#1A1A1A]"
                 }`}
               >
                 {stars} ★
@@ -175,7 +179,7 @@ export default function ReviewList({ initialReviews }: Props) {
           <select
             value={sortBy}
             onChange={(e) => setSortBy(e.target.value as any)}
-            className="bg-zinc-900 border border-zinc-800 text-zinc-300 text-xs font-semibold rounded-lg px-3 py-2 outline-none focus:border-red-500 cursor-pointer ml-auto lg:ml-0"
+            className="bg-[#111111]/80 border border-zinc-800/80 text-zinc-350 text-xs font-semibold rounded-lg px-3 py-2 outline-none focus:border-white cursor-pointer ml-auto lg:ml-0"
           >
             <option value="latest">Latest Reviews</option>
             <option value="highest">Highest Ratings</option>
@@ -187,7 +191,7 @@ export default function ReviewList({ initialReviews }: Props) {
       {/* Feed List */}
       <div className="space-y-6">
         {filteredReviews.length === 0 ? (
-          <div className="text-center py-20 bg-zinc-950/20 border border-zinc-900 rounded-3xl">
+          <div className="text-center py-20 bg-[#1A1A1A] border border-zinc-800/30 rounded-3xl">
             <span className="text-5xl block mb-4">✍️</span>
             <h3 className="text-2xl font-bold text-white mb-2">No Reviews Found</h3>
             <p className="text-zinc-500 text-sm">
@@ -204,7 +208,7 @@ export default function ReviewList({ initialReviews }: Props) {
               <Link
                 key={review.id}
                 href={`/movie/${review.movie_id}`}
-                className="block group bg-zinc-950/40 border border-zinc-900 hover:border-red-600/40 rounded-2xl overflow-hidden hover:-translate-y-1 hover:shadow-[0_0_35px_rgba(220,38,38,0.15)] transition duration-300 p-5 md:p-6"
+                className="block group bg-[#1A1A1A] border border-zinc-800/30 hover:border-white/10 rounded-2xl overflow-hidden hover:-translate-y-1 hover:shadow-[0_20px_40px_rgba(0,0,0,0.5)] transition duration-300 p-5 md:p-6"
               >
                 <div className="flex flex-col md:flex-row gap-6">
                   {/* Poster / Side Column */}
@@ -213,10 +217,10 @@ export default function ReviewList({ initialReviews }: Props) {
                       <img
                         src={`https://image.tmdb.org/t/p/w200${review.poster_path}`}
                         alt={review.movie_title}
-                        className="w-16 h-24 md:w-24 md:h-36 rounded-xl object-cover border border-zinc-800 shadow-md"
+                        className="w-16 h-24 md:w-24 md:h-36 rounded-xl object-cover border border-zinc-800/50 shadow-md"
                       />
                     ) : (
-                      <div className="w-16 h-24 md:w-24 md:h-36 bg-zinc-900 rounded-xl flex items-center justify-center text-zinc-500 text-xs text-center p-2 border border-zinc-800">
+                      <div className="w-16 h-24 md:w-24 md:h-36 bg-[#111111] rounded-xl flex items-center justify-center text-zinc-550 text-xs text-center p-2 border border-zinc-800/40">
                         No Poster
                       </div>
                     )}
@@ -226,10 +230,10 @@ export default function ReviewList({ initialReviews }: Props) {
                   <div className="flex-1 space-y-4">
                     <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-2">
                       <div>
-                        <h3 className="text-xl md:text-2xl font-black text-white group-hover:text-red-500 transition leading-tight">
+                        <h3 className="text-xl md:text-2xl font-black text-white group-hover:text-zinc-350 transition leading-tight">
                           {review.movie_title}
                         </h3>
-                        <p className="text-xs text-red-500 mt-1 font-semibold">
+                        <p className="text-xs text-white/60 mt-1 font-semibold">
                           {review.user_email ? review.user_email.split("@")[0] : "Anonymous User"}
                         </p>
                         <p className="text-zinc-500 text-[10px] mt-0.5">
@@ -239,7 +243,7 @@ export default function ReviewList({ initialReviews }: Props) {
 
                       {/* Stars */}
                       <div className="flex flex-col items-end">
-                        <div className="flex text-yellow-400 text-xl font-bold">
+                        <div className="flex text-yellow-450 text-xl font-bold">
                           {[1, 2, 3, 4, 5].map((star) => (
                             <span key={star}>{review.rating >= star ? "★" : "☆"}</span>
                           ))}
@@ -247,55 +251,55 @@ export default function ReviewList({ initialReviews }: Props) {
                       </div>
                     </div>
 
-                    {/* Criteria Ratings Breakdown (Ratings System Upgrade) */}
+                    {/* Criteria Ratings Breakdown */}
                     {parsed.criteria && (
-                      <div className="grid grid-cols-2 sm:grid-cols-5 gap-3 bg-zinc-900/30 p-3.5 rounded-xl border border-zinc-900/80 text-xs">
+                      <div className="grid grid-cols-2 sm:grid-cols-5 gap-3 bg-[#111111]/40 p-3.5 rounded-xl border border-zinc-800/30 text-xs">
                         {parsed.criteria.story > 0 && (
                           <div className="space-y-1">
                             <div className="text-zinc-500 font-semibold">Screenplay</div>
-                            <div className="text-yellow-400 font-bold">★ {parsed.criteria.story}</div>
+                            <div className="text-yellow-450 font-bold">★ {parsed.criteria.story}</div>
                           </div>
                         )}
                         {parsed.criteria.acting > 0 && (
                           <div className="space-y-1">
                             <div className="text-zinc-500 font-semibold">Acting</div>
-                            <div className="text-yellow-400 font-bold">★ {parsed.criteria.acting}</div>
+                            <div className="text-yellow-450 font-bold">★ {parsed.criteria.acting}</div>
                           </div>
                         )}
                         {parsed.criteria.direction > 0 && (
                           <div className="space-y-1">
                             <div className="text-zinc-500 font-semibold">Direction</div>
-                            <div className="text-yellow-400 font-bold">★ {parsed.criteria.direction}</div>
+                            <div className="text-yellow-450 font-bold">★ {parsed.criteria.direction}</div>
                           </div>
                         )}
                         {parsed.criteria.music > 0 && (
                           <div className="space-y-1">
                             <div className="text-zinc-500 font-semibold">Music</div>
-                            <div className="text-yellow-400 font-bold">★ {parsed.criteria.music}</div>
+                            <div className="text-yellow-450 font-bold">★ {parsed.criteria.music}</div>
                           </div>
                         )}
                         {parsed.criteria.visuals > 0 && (
                           <div className="space-y-1">
                             <div className="text-zinc-500 font-semibold">Visuals</div>
-                            <div className="text-yellow-400 font-bold">★ {parsed.criteria.visuals}</div>
+                            <div className="text-yellow-450 font-bold">★ {parsed.criteria.visuals}</div>
                           </div>
                         )}
                       </div>
                     )}
 
                     {/* Review text */}
-                    <p className="text-zinc-300 text-sm md:text-base leading-relaxed break-words whitespace-pre-line">
+                    <p className="text-zinc-350 text-sm md:text-base leading-relaxed break-words whitespace-pre-line">
                       {parsed.text}
                     </p>
 
                     {/* Review Interaction Footer */}
-                    <div className="flex gap-4 items-center pt-3 border-t border-zinc-900/50">
+                    <div className="flex gap-4 items-center pt-3 border-t border-zinc-800/40">
                       <button
                         onClick={(e) => handleUpvote(review.id, e)}
                         className={`flex items-center gap-2 text-xs px-3.5 py-2 rounded-xl border transition ${
                           hasVoted
-                            ? "bg-red-600/20 border-red-500 text-red-500"
-                            : "bg-zinc-900/80 border-zinc-800 hover:border-red-500/50 text-zinc-400 hover:text-white"
+                            ? "bg-white/10 border-white text-white font-bold"
+                            : "bg-[#111111]/80 border-zinc-800/60 hover:border-white/20 text-zinc-400 hover:text-white"
                         }`}
                       >
                         👍 Helpful {reviewVotes > 0 && `(${reviewVotes})`}

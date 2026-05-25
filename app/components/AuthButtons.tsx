@@ -70,7 +70,7 @@ export default function AuthButtons() {
           <button
             onClick={signOut}
             disabled={loading}
-            className="bg-zinc-900 border border-zinc-800 hover:border-red-500 disabled:opacity-50 px-5 py-2 rounded-xl text-sm font-semibold transition duration-300"
+            className="border border-white/20 hover:border-white hover:bg-white/10 text-white disabled:opacity-50 px-5 py-2 rounded-full text-sm font-bold transition duration-300"
           >
             {loading ? "Logging out..." : "Logout"}
           </button>
@@ -81,7 +81,7 @@ export default function AuthButtons() {
         <button
           onClick={signIn}
           disabled={loading}
-          className="bg-red-600 hover:bg-red-700 disabled:opacity-50 px-5 py-2 rounded-xl text-sm font-semibold transition duration-300"
+          className="bg-white hover:bg-zinc-200 text-[#111111] disabled:opacity-50 px-5 py-2 rounded-full text-sm font-bold transition duration-300"
         >
           {loading ? "Opening..." : "Login"}
         </button>

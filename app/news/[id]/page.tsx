@@ -46,11 +46,11 @@ export default async function NewsArticlePage({ params }: Props) {
     return (
       <>
         <Navbar />
-        <main className="min-h-screen bg-black text-white px-6 py-20 flex items-center justify-center">
+        <main className="min-h-screen bg-[#111111] text-white px-6 py-20 flex items-center justify-center">
           <div className="text-center space-y-6">
             <h1 className="text-4xl font-extrabold">News Article Not Found</h1>
-            <p className="text-zinc-500">The article you are trying to view does not exist or has been deleted.</p>
-            <Link href="/news" className="inline-block bg-red-600 hover:bg-red-700 text-white font-bold px-6 py-3 rounded-xl transition">
+            <p className="text-zinc-400">The article you are trying to view does not exist or has been deleted.</p>
+            <Link href="/news" className="inline-block bg-white hover:bg-zinc-200 text-[#111111] font-bold px-8 py-3.5 rounded-full transition">
               Back to News Hub
             </Link>
           </div>
@@ -95,30 +95,30 @@ export default async function NewsArticlePage({ params }: Props) {
 
       <Navbar />
 
-      <main className="min-h-screen bg-black text-white px-4 md:px-6 py-10">
+      <main className="min-h-screen bg-[#111111] text-white px-4 md:px-6 pt-28 pb-16">
         <div className="max-w-7xl mx-auto grid lg:grid-cols-[1fr_350px] gap-10">
           {/* Main content column */}
-          <section className="bg-zinc-950/20 border border-zinc-900/50 p-6 md:p-8 rounded-3xl backdrop-blur-md">
+          <section className="bg-[#1A1A1A] border border-zinc-800/30 p-6 md:p-8 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.5)]">
             <NewsArticleContent article={article} />
           </section>
 
           {/* Sidebar with related articles */}
           <aside className="space-y-8">
-            <div className="bg-zinc-950/40 border border-zinc-900 p-6 rounded-3xl space-y-6">
-              <h3 className="text-xl font-bold text-white border-b border-zinc-800 pb-3">Related Stories</h3>
+            <div className="bg-[#1A1A1A] border border-zinc-800/30 p-6 rounded-3xl space-y-6 shadow-[0_20px_50px_rgba(0,0,0,0.4)]">
+              <h3 className="text-xl font-bold text-white border-b border-zinc-800/60 pb-3">Related Stories</h3>
               {relatedArticles.length === 0 ? (
                 <p className="text-zinc-500 text-sm">No related articles found.</p>
               ) : (
                 <div className="space-y-5">
                   {relatedArticles.map((rel) => (
                     <Link key={rel.id} href={`/news/${rel.id}`} className="group block space-y-2">
-                      <div className="relative h-36 rounded-xl overflow-hidden bg-zinc-900">
+                      <div className="relative h-36 rounded-xl overflow-hidden bg-[#111111]">
                         <img src={rel.image} alt={rel.title} className="w-full h-full object-cover group-hover:scale-105 transition duration-300" />
-                        <div className="absolute top-2 left-2 bg-black/80 px-2 py-0.5 rounded text-[10px] text-red-500 uppercase font-bold">
+                        <div className="absolute top-2 left-2 bg-[#111111]/80 px-2 py-0.5 rounded text-[10px] text-white uppercase font-bold border border-zinc-800/40">
                           {rel.category}
                         </div>
                       </div>
-                      <h4 className="font-bold text-sm text-zinc-300 group-hover:text-red-500 transition line-clamp-2 leading-snug">
+                      <h4 className="font-bold text-sm text-zinc-350 group-hover:text-zinc-300 transition line-clamp-2 leading-snug">
                         {rel.title}
                       </h4>
                       <p className="text-xs text-zinc-500">{new Date(rel.publishedAt).toLocaleDateString()}</p>
@@ -128,16 +128,16 @@ export default async function NewsArticlePage({ params }: Props) {
               )}
             </div>
 
-            {/* Quick Poll or Box Office Summary Widget for premium feel */}
-            <div className="bg-gradient-to-br from-zinc-900 to-black border border-zinc-800 p-6 rounded-3xl space-y-4">
+            {/* Quick Box Office Summary Widget */}
+            <div className="bg-[#1A1A1A] border border-zinc-800/30 p-6 rounded-3xl space-y-4 shadow-[0_20px_50px_rgba(0,0,0,0.4)]">
               <h3 className="text-xl font-bold text-white">Weekly Box Office</h3>
-              <p className="text-zinc-500 text-xs">Estimated Global Gross Collections</p>
+              <p className="text-zinc-400 text-xs">Estimated Global Gross Collections</p>
               <div className="space-y-3 pt-2">
-                <div className="flex justify-between items-center text-sm border-b border-zinc-800/50 pb-2">
+                <div className="flex justify-between items-center text-sm border-b border-zinc-800/40 pb-2">
                   <span className="font-semibold text-zinc-300">1. Pushpa 2: The Rule</span>
-                  <span className="text-red-500 font-bold">₹1,180 Cr</span>
+                  <span className="text-white font-bold">₹1,180 Cr</span>
                 </div>
-                <div className="flex justify-between items-center text-sm border-b border-zinc-800/50 pb-2">
+                <div className="flex justify-between items-center text-sm border-b border-zinc-800/40 pb-2">
                   <span className="font-semibold text-zinc-300">2. Devara: Part 1</span>
                   <span className="text-zinc-400">₹425 Cr</span>
                 </div>

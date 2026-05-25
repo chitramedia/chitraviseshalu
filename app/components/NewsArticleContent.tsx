@@ -96,10 +96,10 @@ export default function NewsArticleContent({ article }: Props) {
         <div className="flex gap-2">
           <button
             onClick={toggleBookmark}
-            className={`p-3 rounded-xl border transition duration-300 ${
+            className={`px-4 py-2 text-xs font-semibold rounded-full border transition duration-300 ${
               isBookmarked
-                ? "bg-red-600/20 border-red-500 text-red-500"
-                : "bg-zinc-900 border-zinc-800 hover:border-red-500 text-zinc-400 hover:text-white"
+                ? "bg-white/10 border-white text-white font-bold"
+                : "bg-[#111111] hover:bg-[#1A1A1A] border-zinc-800/60 hover:border-white/20 text-zinc-400 hover:text-white"
             }`}
             title={isBookmarked ? "Remove from Saved Articles" : "Save Article"}
           >
@@ -107,7 +107,7 @@ export default function NewsArticleContent({ article }: Props) {
           </button>
           <button
             onClick={handleShare}
-            className="p-3 bg-zinc-900 border border-zinc-800 hover:border-red-500 text-zinc-400 hover:text-white rounded-xl transition duration-300 flex items-center gap-2"
+            className="px-4 py-2 bg-[#111111] hover:bg-[#1A1A1A] border border-zinc-800/60 hover:border-white/20 text-zinc-400 hover:text-white rounded-full text-xs font-semibold transition duration-300 flex items-center gap-2"
           >
             🔗 {shareSuccess ? "Copied!" : "Share Link"}
           </button>
@@ -115,11 +115,11 @@ export default function NewsArticleContent({ article }: Props) {
       </div>
 
       {/* Main image */}
-      <div className="relative h-[40vh] md:h-[50vh] rounded-3xl overflow-hidden border border-zinc-850">
+      <div className="relative h-[40vh] md:h-[50vh] rounded-3xl overflow-hidden border border-zinc-800/40 shadow-xl">
         <img src={article.image} alt={article.title} className="w-full h-full object-cover" />
-        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent"></div>
+        <div className="absolute inset-0 bg-gradient-to-t from-[#111111] via-[#111111]/40 to-transparent"></div>
         <div className="absolute bottom-6 left-6 right-6">
-          <span className="bg-red-600 text-white font-bold text-xs uppercase px-3 py-1 rounded-full tracking-wider shadow-lg">
+          <span className="bg-[#1A1A1A] text-zinc-300 font-bold text-xs uppercase px-3 py-1 rounded-full tracking-wider border border-zinc-800/50 shadow-md">
             {article.category}
           </span>
           <h1 className="text-3xl md:text-5xl font-black text-white mt-3 leading-tight drop-shadow-md">
@@ -129,17 +129,17 @@ export default function NewsArticleContent({ article }: Props) {
       </div>
 
       {/* Author and Date Meta */}
-      <div className="flex flex-wrap items-center justify-between gap-4 p-5 rounded-2xl bg-zinc-950/60 border border-zinc-900 backdrop-blur-md">
+      <div className="flex flex-wrap items-center justify-between gap-4 p-5 rounded-2xl bg-[#111111]/90 border border-zinc-800/30 shadow-sm">
         <div className="flex items-center gap-3">
-          <span className="w-10 h-10 rounded-full bg-zinc-900 flex items-center justify-center text-xl">
+          <span className="w-10 h-10 rounded-full bg-[#1A1A1A] flex items-center justify-center text-xl border border-zinc-800/40">
             {article.author.avatar}
           </span>
           <div>
-            <div className="font-bold text-white">{article.author.name}</div>
-            <div className="text-xs text-zinc-500">{article.author.role}</div>
+            <div className="font-bold text-white text-sm">{article.author.name}</div>
+            <div className="text-[10px] text-zinc-500 font-bold uppercase tracking-wider">{article.author.role}</div>
           </div>
         </div>
-        <div className="text-sm text-zinc-400 flex items-center gap-4">
+        <div className="text-xs text-zinc-400 flex items-center gap-4">
           <span>📅 {new Date(article.publishedAt).toLocaleDateString()}</span>
           <span>⏱️ {article.readTime}</span>
         </div>
@@ -150,7 +150,7 @@ export default function NewsArticleContent({ article }: Props) {
         {article.content.split("\n\n").map((paragraph, index) => {
           if (paragraph.startsWith("### ")) {
             return (
-              <h3 key={index} className="text-2xl font-bold text-white mt-8 mb-4 border-l-4 border-red-600 pl-3">
+              <h3 key={index} className="text-2xl font-bold text-white mt-8 mb-4 border-l-4 border-white pl-3">
                 {paragraph.replace("### ", "")}
               </h3>
             );
@@ -180,8 +180,8 @@ export default function NewsArticleContent({ article }: Props) {
       </div>
 
       {/* Newsletter Signup (Retention/Growth) */}
-      <section className="p-8 rounded-3xl bg-gradient-to-r from-red-950/40 via-black to-zinc-950 border border-red-900/30 text-center space-y-4">
-        <h3 className="text-xl md:text-2xl font-bold text-white">Never Miss a Cinematic Update!</h3>
+      <section className="p-8 rounded-3xl bg-[#1A1A1A] border border-zinc-800/30 shadow-[0_20px_50px_rgba(0,0,0,0.5)] text-center space-y-4">
+        <h3 className="text-xl md:text-2xl font-bold text-white bg-gradient-to-r from-white to-zinc-400 bg-clip-text text-transparent">Never Miss a Cinematic Update!</h3>
         <p className="text-zinc-400 text-sm max-w-lg mx-auto">
           Subscribe to the Chitra Viseshalu weekly digest. Get the latest movie updates, review rundowns, and recommendations delivered to your inbox.
         </p>
@@ -196,11 +196,11 @@ export default function NewsArticleContent({ article }: Props) {
             type="email"
             placeholder="Enter your email address"
             required
-            className="flex-1 bg-zinc-900 border border-zinc-800 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-red-500 text-white"
+            className="flex-1 bg-[#111111]/85 border border-zinc-800/60 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-white text-white"
           />
           <button
             type="submit"
-            className="bg-red-600 hover:bg-red-700 font-semibold px-6 py-3 rounded-xl text-sm transition duration-300 shadow-[0_0_15px_rgba(220,38,38,0.4)]"
+            className="bg-white hover:bg-zinc-200 text-[#111111] font-bold px-6 py-3 rounded-full text-sm transition duration-300 shadow-md"
           >
             Subscribe
           </button>
@@ -208,11 +208,11 @@ export default function NewsArticleContent({ article }: Props) {
       </section>
 
       {/* Comment Section (Engagement) */}
-      <section className="space-y-6 pt-10 border-t border-zinc-900">
+      <section className="space-y-6 pt-10 border-t border-zinc-800/30">
         <h3 className="text-2xl font-bold text-white">Discussion & Reaction ({comments.length})</h3>
 
         {/* Comment Form */}
-        <form onSubmit={submitComment} className="space-y-4 p-6 rounded-2xl bg-zinc-950/40 border border-zinc-900">
+        <form onSubmit={submitComment} className="space-y-4 p-6 rounded-3xl bg-[#1A1A1A] border border-zinc-800/30 shadow-md">
           <h4 className="text-sm font-semibold text-zinc-400 uppercase tracking-wider">Leave a Comment</h4>
           <div className="grid md:grid-cols-2 gap-4">
             <input
@@ -220,7 +220,7 @@ export default function NewsArticleContent({ article }: Props) {
               placeholder="Your name (optional)"
               value={authorName}
               onChange={(e) => setAuthorName(e.target.value)}
-              className="bg-zinc-900 border border-zinc-800 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-red-500"
+              className="bg-[#111111]/85 border border-zinc-800/60 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-white"
             />
           </div>
           <textarea
@@ -229,11 +229,11 @@ export default function NewsArticleContent({ article }: Props) {
             onChange={(e) => setCommentText(e.target.value)}
             required
             rows={3}
-            className="w-full bg-zinc-900 border border-zinc-800 rounded-xl p-4 text-sm text-white focus:outline-none focus:border-red-500"
+            className="w-full bg-[#111111]/85 border border-zinc-800/60 rounded-xl p-4 text-sm text-white focus:outline-none focus:border-white resize-none leading-relaxed"
           />
           <button
             type="submit"
-            className="bg-zinc-800 hover:bg-red-600 hover:text-white border border-zinc-700 hover:border-red-500 text-zinc-300 font-semibold px-6 py-2.5 rounded-xl text-sm transition duration-300"
+            className="bg-white hover:bg-zinc-200 text-[#111111] font-bold px-6 py-2.5 rounded-full text-sm transition duration-300 shadow-sm border-none"
           >
             Post Comment
           </button>
@@ -247,15 +247,15 @@ export default function NewsArticleContent({ article }: Props) {
             comments.map((comment) => (
               <div
                 key={comment.id}
-                className="p-5 rounded-2xl bg-zinc-950/20 border border-zinc-900/50 space-y-2 hover:border-zinc-850 transition duration-300"
+                className="p-5 rounded-2xl bg-[#1A1A1A]/70 border border-zinc-800/30 space-y-2 hover:border-white/10 transition duration-300 shadow-sm"
               >
                 <div className="flex justify-between items-center">
-                  <div className="font-bold text-red-500 text-sm">{comment.author}</div>
-                  <div className="text-xs text-zinc-500">
+                  <div className="font-bold text-white text-sm">{comment.author}</div>
+                  <div className="text-xs text-zinc-505">
                     {new Date(comment.createdAt).toLocaleString()}
                   </div>
                 </div>
-                <p className="text-zinc-300 text-sm leading-relaxed">{comment.text}</p>
+                <p className="text-zinc-350 text-sm leading-relaxed">{comment.text}</p>
               </div>
             ))
           )}

@@ -53,7 +53,7 @@ export default async function ReviewsPage() {
 
       <Navbar />
 
-      <main className="min-h-screen bg-black text-white px-4 md:px-6 py-10">
+      <main className="min-h-screen bg-[#111111] text-white px-4 md:px-6 pt-28 pb-16">
         <div className="max-w-6xl mx-auto space-y-8">
           <div className="flex items-center justify-between">
             <BackButton />
@@ -61,7 +61,7 @@ export default async function ReviewsPage() {
 
           {/* Heading Section */}
           <header className="space-y-3">
-            <p className="uppercase tracking-[0.2em] text-red-500 font-bold text-xs">
+            <p className="uppercase tracking-[0.2em] text-white/60 font-bold text-xs">
               Audience Speak
             </p>
             <h1 className="text-4xl md:text-5xl font-black tracking-tight bg-gradient-to-r from-white to-zinc-400 bg-clip-text text-transparent">

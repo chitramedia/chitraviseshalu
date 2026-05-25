@@ -138,8 +138,8 @@ export default function AdminPage() {
     return (
       <>
         <Navbar />
-        <main className="min-h-screen bg-black text-white flex items-center justify-center">
-          <div className="w-8 h-8 border-4 border-red-600 border-t-transparent rounded-full animate-spin"></div>
+        <main className="min-h-screen bg-[#111111] text-white flex items-center justify-center">
+          <div className="w-8 h-8 border-4 border-zinc-800 border-t-white rounded-full animate-spin"></div>
         </main>
         <Footer />
       </>
@@ -150,16 +150,16 @@ export default function AdminPage() {
     return (
       <>
         <Navbar />
-        <main className="min-h-screen bg-black text-white flex items-center justify-center px-6">
-          <div className="text-center space-y-6 max-w-sm">
+        <main className="min-h-screen bg-[#111111] text-white flex items-center justify-center px-6">
+          <div className="text-center space-y-6 max-w-sm bg-[#1A1A1A] border border-zinc-800/30 p-8 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.5)]">
             <span className="text-6xl block">⛔</span>
             <h1 className="text-3xl font-black">Access Denied</h1>
-            <p className="text-zinc-500 text-sm">
+            <p className="text-zinc-400 text-sm">
               You must be logged in to access the administrator dashboard.
             </p>
             <Link
               href="/login"
-              className="inline-block w-full bg-red-600 hover:bg-red-700 text-white font-bold px-6 py-3 rounded-xl transition shadow-lg"
+              className="inline-block w-full bg-white hover:bg-zinc-200 text-[#111111] font-bold px-6 py-3.5 rounded-full transition shadow-md"
             >
               Log In
             </Link>
@@ -174,16 +174,16 @@ export default function AdminPage() {
     <>
       <Navbar />
 
-      <main className="min-h-screen bg-black text-white px-4 md:px-6 py-10">
+      <main className="min-h-screen bg-[#111111] text-white px-4 md:px-6 pt-28 pb-16">
         <div className="max-w-7xl mx-auto space-y-10">
           <BackButton />
 
           <header className="space-y-2">
-            <span className="text-red-500 font-bold text-xs uppercase tracking-wider">
+            <span className="text-white/60 font-bold text-xs uppercase tracking-wider">
               Control Panel
             </span>
-            <h1 className="text-4xl md:text-5xl font-black tracking-tight">Admin Content Tools</h1>
-            <p className="text-zinc-500 text-sm">
+            <h1 className="text-4xl md:text-5xl font-black tracking-tight bg-gradient-to-r from-white to-zinc-400 bg-clip-text text-transparent">Admin Content Tools</h1>
+            <p className="text-zinc-400 text-sm">
               Manage cinema updates, moderate reviews, and set featured banners for Chitra Viseshalu.
             </p>
           </header>
@@ -192,7 +192,7 @@ export default function AdminPage() {
             {/* Left Column: Form & Moderation lists */}
             <div className="space-y-10">
               {/* News Creator Form */}
-              <div className="bg-zinc-950/40 border border-zinc-900 rounded-3xl p-6 md:p-8 space-y-6">
+              <div className="bg-[#1A1A1A] border border-zinc-800/30 rounded-3xl p-6 md:p-8 space-y-6 shadow-[0_20px_50px_rgba(0,0,0,0.5)]">
                 <h2 className="text-2xl font-black text-white flex items-center gap-2">
                   📝 Publish Movie News
                 </h2>
@@ -209,7 +209,7 @@ export default function AdminPage() {
                         value={newsTitle}
                         onChange={(e) => setNewsTitle(e.target.value)}
                         required
-                        className="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-red-500 text-white transition"
+                        className="w-full bg-[#111111]/85 border border-zinc-800/60 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-white text-white transition"
                       />
                     </div>
                     <div>
@@ -221,7 +221,7 @@ export default function AdminPage() {
                         placeholder="https://images.unsplash.com/..."
                         value={newsImage}
                         onChange={(e) => setNewsImage(e.target.value)}
-                        className="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-red-500 text-white transition"
+                        className="w-full bg-[#111111]/85 border border-zinc-800/60 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-white text-white transition"
                       />
                     </div>
                   </div>
@@ -234,7 +234,7 @@ export default function AdminPage() {
                       <select
                         value={newsCategory}
                         onChange={(e) => setNewsCategory(e.target.value as any)}
-                        className="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-red-500 text-white transition cursor-pointer"
+                        className="w-full bg-[#111111]/85 border border-zinc-800/60 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-white text-white transition cursor-pointer"
                       >
                         {categories.map((c) => (
                           <option key={c} value={c}>
@@ -252,7 +252,7 @@ export default function AdminPage() {
                         placeholder="E.g., 4 min read"
                         value={newsReadTime}
                         onChange={(e) => setNewsReadTime(e.target.value)}
-                        className="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-red-500 text-white transition"
+                        className="w-full bg-[#111111]/85 border border-zinc-800/60 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-white text-white transition"
                       />
                     </div>
                   </div>
@@ -266,7 +266,7 @@ export default function AdminPage() {
                       placeholder="One-line summary for cards and search snippets"
                       value={newsSummary}
                       onChange={(e) => setNewsSummary(e.target.value)}
-                      className="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-red-500 text-white transition"
+                      className="w-full bg-[#111111]/85 border border-zinc-800/60 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-white text-white transition"
                     />
                   </div>
 
@@ -280,13 +280,13 @@ export default function AdminPage() {
                       onChange={(e) => setNewsContent(e.target.value)}
                       required
                       rows={6}
-                      className="w-full bg-zinc-900 border border-zinc-800 rounded-xl p-4 text-sm focus:outline-none focus:border-red-500 text-white transition"
+                      className="w-full bg-[#111111]/85 border border-zinc-800/60 rounded-xl p-4 text-sm focus:outline-none focus:border-white text-white transition resize-none leading-relaxed"
                     />
                   </div>
 
                   <button
                     type="submit"
-                    className="bg-red-600 hover:bg-red-700 text-white font-bold px-6 py-3 rounded-xl text-sm transition shadow-[0_0_15px_rgba(220,38,38,0.4)]"
+                    className="bg-white hover:bg-zinc-200 text-[#111111] font-bold px-6 py-3 rounded-full text-sm transition shadow-md"
                   >
                     Publish News Article
                   </button>
@@ -294,7 +294,7 @@ export default function AdminPage() {
               </div>
 
               {/* Review Moderation Panel */}
-              <div className="bg-zinc-950/40 border border-zinc-900 rounded-3xl p-6 md:p-8 space-y-6">
+              <div className="bg-[#1A1A1A] border border-zinc-800/30 rounded-3xl p-6 md:p-8 space-y-6 shadow-[0_20px_50px_rgba(0,0,0,0.5)]">
                 <h2 className="text-2xl font-black text-white flex items-center gap-2">
                   🛡️ Review Moderation Panel ({reviews.length})
                 </h2>
@@ -306,16 +306,16 @@ export default function AdminPage() {
                     reviews.map((rev) => (
                       <div
                         key={rev.id}
-                        className="p-4 bg-zinc-900/60 border border-zinc-850 rounded-2xl flex justify-between gap-4 items-start"
+                        className="p-4 bg-[#111111]/85 border border-zinc-800/40 rounded-2xl flex justify-between gap-4 items-start"
                       >
                         <div className="space-y-1 flex-1">
                           <div className="flex justify-between items-center">
                             <span className="font-bold text-sm text-white">{rev.movie_title}</span>
-                            <span className="text-yellow-400 text-xs font-semibold">
+                            <span className="text-yellow-450 text-xs font-semibold">
                               {rev.rating} ★
                             </span>
                           </div>
-                          <span className="text-[10px] text-red-500 block">
+                          <span className="text-[10px] text-white/60 block">
                             By: {rev.user_email} &bull; {new Date(rev.created_at).toLocaleDateString()}
                           </span>
                           <p className="text-zinc-400 text-xs line-clamp-2 leading-relaxed">
@@ -324,7 +324,7 @@ export default function AdminPage() {
                         </div>
                         <button
                           onClick={() => handleDeleteReview(rev.id)}
-                          className="bg-red-900/20 hover:bg-red-950/40 border border-red-900/50 hover:border-red-500 text-red-400 hover:text-red-300 p-2 rounded-xl text-xs transition flex-shrink-0"
+                          className="bg-white/10 hover:bg-white/20 border border-white/25 hover:border-white/50 text-white px-3 py-1.5 rounded-full text-xs font-semibold transition flex-shrink-0"
                         >
                           Delete
                         </button>
@@ -338,9 +338,9 @@ export default function AdminPage() {
             {/* Right Column: News Manager & Banners */}
             <div className="space-y-8">
               {/* Site Announcement Widget */}
-              <div className="bg-gradient-to-br from-zinc-950 to-zinc-900 border border-zinc-900 rounded-3xl p-6 space-y-4">
+              <div className="bg-[#1A1A1A] border border-zinc-800/30 rounded-3xl p-6 space-y-4 shadow-[0_20px_50px_rgba(0,0,0,0.5)]">
                 <h3 className="text-lg font-black text-white">Featured Banner Announcement</h3>
-                <p className="text-zinc-500 text-xs leading-relaxed">
+                <p className="text-zinc-550 text-xs leading-relaxed">
                   Update the marquee announcement shown on the homepage hero banner.
                 </p>
                 <textarea
@@ -348,24 +348,24 @@ export default function AdminPage() {
                   value={announcement}
                   onChange={(e) => setAnnouncement(e.target.value)}
                   rows={2}
-                  className="w-full bg-zinc-900 border border-zinc-800 rounded-xl p-3 text-sm focus:outline-none focus:border-red-500 text-white transition"
+                  className="w-full bg-[#111111]/85 border border-zinc-800/60 rounded-xl p-3 text-sm focus:outline-none focus:border-white text-white transition resize-none"
                 />
                 <button
                   onClick={handleSaveAnnouncement}
-                  className="w-full bg-zinc-800 hover:bg-zinc-700 text-white text-xs font-semibold py-2.5 rounded-xl border border-zinc-700 transition"
+                  className="w-full bg-[#111111] hover:bg-[#1A1A1A] text-white border border-zinc-800/60 hover:border-white/20 text-xs font-semibold py-2.5 rounded-full transition"
                 >
                   Save Announcement
                 </button>
               </div>
 
               {/* News Articles Manager list */}
-              <div className="bg-zinc-950/40 border border-zinc-900 rounded-3xl p-6 space-y-4">
+              <div className="bg-[#1A1A1A] border border-zinc-800/30 rounded-3xl p-6 space-y-4 shadow-[0_20px_50px_rgba(0,0,0,0.5)]">
                 <h3 className="text-lg font-black text-white">Manage News Stories ({articlesList.length})</h3>
                 <div className="space-y-3 max-h-[300px] overflow-y-auto pr-1">
                   {articlesList.map((art) => (
                     <div
                       key={art.id}
-                      className="p-3 bg-zinc-900/40 border border-zinc-850 rounded-xl flex items-center justify-between gap-3"
+                      className="p-3 bg-[#111111]/60 border border-zinc-800/40 rounded-xl flex items-center justify-between gap-3"
                     >
                       <div className="flex items-center gap-3 overflow-hidden">
                         <img src={art.image} className="w-10 h-10 object-cover rounded-lg flex-shrink-0" />
@@ -373,7 +373,7 @@ export default function AdminPage() {
                       </div>
                       <button
                         onClick={() => handleDeleteArticle(art.id)}
-                        className="text-red-500 hover:text-red-400 text-xs px-2.5 py-1.5 hover:bg-red-500/10 rounded-lg transition"
+                        className="text-white/60 hover:text-white text-xs px-2.5 py-1.5 hover:bg-white/10 rounded-full transition"
                       >
                         Delete
                       </button>

@@ -22,76 +22,52 @@ export default async function HeroSection() {
   const movie = data.results[0];
 
   return (
-    <section className="relative h-[90vh] flex items-center overflow-hidden">
+    <section className="relative w-full h-screen flex items-end pb-24 overflow-hidden">
 
       {/* Backdrop */}
       <img
         src={`https://image.tmdb.org/t/p/original${movie.backdrop_path}`}
         alt={movie.title}
-        className="absolute inset-0 w-full h-full object-cover scale-105"
+        className="absolute inset-0 w-full h-full object-cover"
       />
 
-      {/* Dark Overlays */}
-      <div className="absolute inset-0 bg-gradient-to-r from-black via-black/80 to-black/40"></div>
+      {/* The Vignette (Gradient Overlay) */}
+      <div className="absolute inset-0 bg-gradient-to-b from-[#111111]/0 via-[#111111]/40 to-[#111111] z-10 pointer-events-none"></div>
+      <div className="absolute inset-0 bg-gradient-to-r from-[#111111]/80 via-[#111111]/20 to-transparent z-10 pointer-events-none"></div>
 
-      <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
+      {/* Content (Bottom-Left Quadrant) */}
+      <div className="relative z-20 w-full max-w-7xl mx-auto px-6 md:px-8">
 
-      {/* Glow Effect */}
-      <div className="absolute inset-0 bg-black/20 backdrop-blur-[1px]"></div>
-
-      {/* Content */}
-      <div className="relative z-10 max-w-7xl mx-auto px-6">
-
-        {/* Featured Announcement */}
-        <FeaturedAnnouncement />
-
-        {/* Tag */}
-        <p className="uppercase tracking-[0.3em] text-red-500 text-sm mb-4">
-          Trending Worldwide
+        {/* Tag / Featured */}
+        <p className="uppercase tracking-[0.2em] text-white/60 text-xs md:text-sm font-bold mb-3">
+          🔥 Trending Worldwide
         </p>
 
         {/* Title */}
-        <h1 className="text-5xl md:text-7xl font-extrabold leading-tight max-w-4xl drop-shadow-2xl">
+        <h1 className="text-5xl md:text-7xl font-black tracking-tight text-white leading-tight max-w-4xl drop-shadow-2xl">
           {movie.title}
         </h1>
 
-        {/* Overview */}
-        <p className="mt-6 text-zinc-300 text-lg max-w-2xl leading-relaxed line-clamp-4">
+        {/* Description */}
+        <p className="mt-4 text-zinc-300 text-sm md:text-base max-w-2xl leading-relaxed line-clamp-2">
           {movie.overview}
         </p>
 
-        {/* Info */}
-        <div className="flex flex-wrap gap-6 mt-6 text-sm text-zinc-300">
-
-          <div className="bg-black/40 backdrop-blur-md px-4 py-2 rounded-full border border-zinc-800">
-            ⭐ {movie.vote_average?.toFixed(1)}
-          </div>
-
-          <div className="bg-black/40 backdrop-blur-md px-4 py-2 rounded-full border border-zinc-800">
-            🔥 Trending Now
-          </div>
-
-          <div className="bg-black/40 backdrop-blur-md px-4 py-2 rounded-full border border-zinc-800">
-            🌍 TMDB Global
-          </div>
-
-        </div>
-
         {/* Action Buttons */}
-        <div className="flex flex-wrap gap-4 mt-10">
-
-          <a
-            href={`/movie/${movie.id}`}
-            className="bg-red-600 hover:bg-red-700 hover:scale-105 px-7 py-3 rounded-xl font-semibold transition duration-300 shadow-[0_0_25px_rgba(220,38,38,0.35)]"
-          >
-            ▶ View Details
-          </a>
+        <div className="flex flex-wrap gap-4 mt-8">
 
           <a
             href="/reviews"
-            className="border border-zinc-700 hover:border-zinc-500 hover:bg-zinc-900/80 backdrop-blur-md px-7 py-3 rounded-xl transition duration-300"
+            className="bg-white hover:bg-zinc-200 text-[#111111] font-bold px-8 py-3.5 rounded-full transition duration-300 shadow-lg text-sm"
           >
-            ★ Explore Reviews
+            Read Review
+          </a>
+
+          <a
+            href={`/movie/${movie.id}`}
+            className="border border-white/40 hover:border-white hover:bg-white/10 text-white font-bold px-8 py-3.5 rounded-full transition duration-300 text-sm"
+          >
+            Watch Trailer
           </a>
 
         </div>

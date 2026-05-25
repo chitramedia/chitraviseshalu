@@ -63,13 +63,13 @@ export default function CommunityPoll() {
   const totalVotes = options.reduce((acc, opt) => acc + opt.votes, 0);
 
   return (
-    <div className="bg-zinc-950/60 border border-zinc-900 rounded-3xl p-6 md:p-8 backdrop-blur-md relative overflow-hidden shadow-xl">
+    <div className="bg-[#1A1A1A] border border-zinc-800/30 rounded-3xl p-6 md:p-8 relative overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.5)]">
       {/* Ambient background accent */}
-      <div className="absolute -top-10 -left-10 w-40 h-40 bg-red-650/10 rounded-full blur-[80px] pointer-events-none"></div>
+      <div className="absolute -top-10 -left-10 w-40 h-40 bg-white/5 rounded-full blur-[80px] pointer-events-none"></div>
 
       <div className="relative z-10 space-y-5">
         <div>
-          <span className="text-red-500 font-bold text-[10px] uppercase tracking-widest block mb-1">
+          <span className="text-white/60 font-bold text-[10px] uppercase tracking-widest block mb-1">
             Chitra Poll of the Week
           </span>
           <h3 className="text-xl md:text-2xl font-black text-white leading-tight">
@@ -88,18 +88,18 @@ export default function CommunityPoll() {
                 disabled={hasVoted}
                 onClick={() => handleVote(opt.id)}
                 className={`w-full text-left relative overflow-hidden rounded-2xl border transition duration-300 ${
-                  hasVoted ? "cursor-default" : "hover:border-red-500/50"
+                  hasVoted ? "cursor-default" : "hover:border-white/40"
                 } ${
                   isSelected
-                    ? "bg-red-600/10 border-red-500/60 text-white"
-                    : "bg-zinc-900/40 border-zinc-900 text-zinc-300"
+                    ? "bg-white/10 border-white/40 text-white"
+                    : "bg-[#111111]/80 border-zinc-800/80 text-zinc-300"
                 }`}
               >
                 {/* Vote fill bar */}
                 {hasVoted && (
                   <div
                     className={`absolute left-0 top-0 bottom-0 transition-all duration-700 ${
-                      isSelected ? "bg-red-600/10" : "bg-zinc-800/30"
+                      isSelected ? "bg-white/10" : "bg-zinc-800/20"
                     }`}
                     style={{ width: `${percentage}%` }}
                   ></div>
@@ -118,9 +118,9 @@ export default function CommunityPoll() {
           })}
         </div>
 
-        <div className="flex justify-between items-center text-[10px] text-zinc-500 pt-2 border-t border-zinc-900">
+        <div className="flex justify-between items-center text-[10px] text-zinc-500 pt-2 border-t border-zinc-850">
           <span>Total community votes: {totalVotes}</span>
-          {hasVoted && <span className="text-red-500 font-bold">✓ Thank you for voting!</span>}
+          {hasVoted && <span className="text-white font-bold">✓ Thank you for voting!</span>}
         </div>
       </div>
     </div>

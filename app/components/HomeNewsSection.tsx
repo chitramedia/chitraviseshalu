@@ -32,7 +32,7 @@ export default function HomeNewsSection() {
         </Link>
       </div>
 
-      <div className="grid md:grid-cols-3 gap-6">
+      <div className="grid md:grid-cols-3 gap-8">
         {articles.map((article) => {
           // Format date to local readable text
           const timeString = new Date(article.publishedAt).toLocaleDateString(undefined, {
@@ -44,32 +44,32 @@ export default function HomeNewsSection() {
             <Link
               key={article.id}
               href={`/news/${article.id}`}
-              className="group bg-zinc-950/40 border border-zinc-900 hover:border-zinc-800 rounded-3xl p-5 hover:-translate-y-1.5 transition duration-300 flex flex-col justify-between"
+              className="group flex flex-col justify-between transition duration-300"
             >
               <div className="space-y-4">
                 {/* News Image */}
-                <div className="relative h-44 overflow-hidden rounded-2xl border border-zinc-900">
+                <div className="relative h-56 overflow-hidden rounded-2xl bg-zinc-900 transition duration-500 ease-out group-hover:-translate-y-2 group-hover:shadow-[0_20px_40px_rgba(0,0,0,0.6)]">
                   <img
                     src={article.image}
                     alt={article.title}
-                    className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
+                    className="w-full h-full object-cover transition duration-700 ease-out group-hover:scale-[1.03]"
                   />
-                  <span className="absolute top-2.5 left-2.5 bg-red-650/90 text-white text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded-md backdrop-blur-sm">
+                  <span className="absolute top-3 left-3 bg-[#111111]/85 text-white text-[9px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-md backdrop-blur-sm">
                     {article.category}
                   </span>
                 </div>
 
                 <div className="space-y-2">
-                  <h3 className="text-base font-extrabold text-white group-hover:text-red-500 transition line-clamp-2 leading-snug">
+                  <h3 className="text-lg font-bold text-white transition leading-snug group-hover:text-zinc-300">
                     {article.title}
                   </h3>
-                  <p className="text-zinc-400 text-xs line-clamp-2 leading-relaxed">
+                  <p className="text-zinc-400 text-sm line-clamp-2 leading-relaxed">
                     {article.summary}
                   </p>
                 </div>
               </div>
 
-              <div className="flex justify-between items-center text-[10px] text-zinc-500 pt-4 border-t border-zinc-900/60 mt-4 font-semibold">
+              <div className="flex justify-between items-center text-[10px] text-zinc-500 pt-4 border-t border-zinc-800/40 mt-4 font-semibold">
                 <div className="flex items-center gap-1.5">
                   <span>{article.author.avatar}</span>
                   <span>{article.author.name}</span>

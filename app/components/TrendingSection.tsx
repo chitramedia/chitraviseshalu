@@ -56,6 +56,7 @@ export default async function TrendingSection() {
                 <img
                   src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
                   alt={movie.title}
+                  loading="lazy"
                   className="relative w-full h-[330px] object-cover group-hover:scale-110 transition duration-500"
                 />
 

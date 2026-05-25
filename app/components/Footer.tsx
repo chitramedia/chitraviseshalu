@@ -1,6 +1,6 @@
 export default function Footer() {
   return (
-    <footer className="border-t border-zinc-800 bg-black/80 backdrop-blur-xl mt-20">
+    <footer className="border-t border-zinc-900/50 bg-[#111111] mt-20">
 
       <div className="max-w-7xl mx-auto px-6 py-12">
 
@@ -9,9 +9,8 @@ export default function Footer() {
           {/* Brand */}
           <div>
 
-            <h2 className="text-2xl font-extrabold mb-4">
-              <span className="text-white">Chitra</span>{" "}
-              <span className="text-red-600">Viseshalu</span>
+            <h2 className="text-2xl font-extrabold mb-4 text-white">
+              Chitra Viseshalu
             </h2>
 
             <p className="text-zinc-400 leading-relaxed">

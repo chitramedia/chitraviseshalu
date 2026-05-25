@@ -89,16 +89,16 @@ export default function WatchlistButton({
     <button
       onClick={toggleWatchlist}
       disabled={loading}
-      className={`px-6 py-3 rounded-xl font-semibold transition duration-300 ${
+      className={`px-6 py-3 rounded-full text-xs md:text-sm font-bold transition duration-300 shadow-md ${
         saved
-          ? "bg-green-600 hover:bg-green-700"
-          : "bg-zinc-900 border border-zinc-700 hover:border-red-500"
+          ? "bg-white/10 hover:bg-white/20 text-white border border-white/20"
+          : "bg-white hover:bg-zinc-200 text-[#111111]"
       }`}
     >
       {loading
         ? "Loading..."
         : saved
-        ? "✓ Saved"
+        ? "✓ In Watchlist"
         : "+ Add to Watchlist"}
     </button>
   );

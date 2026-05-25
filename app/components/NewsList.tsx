@@ -27,17 +27,17 @@ export default function NewsList() {
   return (
     <div className="space-y-10">
       {/* Search and Category Filters */}
-      <div className="flex flex-col md:flex-row gap-5 justify-between items-center bg-zinc-950/60 p-6 rounded-2xl border border-zinc-800 backdrop-blur-md">
+      <div className="flex flex-col md:flex-row gap-5 justify-between items-center bg-[#1A1A1A] p-6 rounded-3xl border border-zinc-800/30 shadow-[0_20px_50px_rgba(0,0,0,0.4)]">
         {/* Categories */}
         <div className="flex flex-wrap gap-2 w-full md:w-auto">
           {categories.map((category) => (
             <button
               key={category}
               onClick={() => setActiveCategory(category)}
-              className={`px-4 py-2 rounded-xl text-xs md:text-sm font-semibold transition duration-300 ${
+              className={`px-4 py-2 rounded-full text-xs md:text-sm font-semibold transition duration-300 ${
                 activeCategory === category
-                  ? "bg-red-600 text-white shadow-[0_0_15px_rgba(220,38,38,0.4)]"
-                  : "bg-zinc-900 text-zinc-400 hover:text-white hover:bg-zinc-800"
+                  ? "bg-white text-[#111111] shadow-md font-bold"
+                  : "bg-[#111111]/80 text-zinc-400 hover:text-white hover:bg-[#1A1A1A]"
               }`}
             >
               {category}
@@ -52,7 +52,7 @@ export default function NewsList() {
             placeholder="Search news..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full bg-zinc-900 border border-zinc-800 rounded-xl pl-10 pr-4 py-3 text-sm text-white focus:outline-none focus:border-red-500 transition duration-300"
+            className="w-full bg-[#111111]/80 border border-zinc-800/80 rounded-xl pl-10 pr-4 py-3 text-sm text-white focus:outline-none focus:border-white transition duration-300"
           />
           <span className="absolute left-3 top-3.5 text-zinc-500">🔍</span>
         </div>
@@ -60,31 +60,31 @@ export default function NewsList() {
 
       {/* Featured Headline */}
       {filteredArticles.length > 0 && searchQuery === "" && activeCategory === "All" && (
-        <div className="group relative rounded-3xl overflow-hidden border border-zinc-850 bg-gradient-to-br from-zinc-900/50 to-black hover:border-red-500/50 transition duration-500 shadow-[0_4px_30px_rgba(0,0,0,0.8)]">
+        <div className="group relative rounded-3xl overflow-hidden border border-zinc-800/30 bg-[#1A1A1A] hover:border-white/10 transition duration-500 shadow-[0_20px_50px_rgba(0,0,0,0.5)]">
           <Link href={`/news/${filteredArticles[0].id}`} className="grid md:grid-cols-2 gap-0 md:gap-6">
-            <div className="relative h-64 md:h-[400px] overflow-hidden">
+            <div className="relative h-64 md:h-[400px] overflow-hidden bg-zinc-900">
               <img
                 src={filteredArticles[0].image}
                 alt={filteredArticles[0].title}
                 className="w-full h-full object-cover group-hover:scale-105 transition duration-700"
               />
-              <div className="absolute inset-0 bg-gradient-to-t md:bg-gradient-to-r from-black via-black/40 to-transparent"></div>
-              <div className="absolute top-4 left-4 bg-red-600 text-white font-bold text-xs uppercase px-3 py-1 rounded-full tracking-wider shadow-lg">
+              <div className="absolute inset-0 bg-gradient-to-t md:bg-gradient-to-r from-[#111111] via-[#111111]/45 to-transparent"></div>
+              <div className="absolute top-4 left-4 bg-white text-[#111111] font-bold text-xs uppercase px-3 py-1 rounded-md tracking-wider shadow-lg">
                 🔥 Hot Update
               </div>
             </div>
             <div className="p-8 flex flex-col justify-center space-y-4">
-              <span className="text-red-500 text-xs font-semibold uppercase tracking-widest">
+              <span className="text-white/60 text-xs font-semibold uppercase tracking-widest">
                 {filteredArticles[0].category} &bull; {filteredArticles[0].readTime}
               </span>
-              <h2 className="text-3xl md:text-4xl font-extrabold text-white group-hover:text-red-500 transition duration-300 leading-tight">
+              <h2 className="text-3xl md:text-4xl font-extrabold text-white group-hover:text-zinc-300 transition duration-300 leading-tight">
                 {filteredArticles[0].title}
               </h2>
               <p className="text-zinc-400 text-sm md:text-base leading-relaxed">
                 {filteredArticles[0].summary}
               </p>
               <div className="flex items-center gap-3 pt-4">
-                <span className="w-8 h-8 rounded-full bg-zinc-800 flex items-center justify-center text-lg">
+                <span className="w-8 h-8 rounded-full bg-[#111111] flex items-center justify-center text-lg">
                   {filteredArticles[0].author.avatar}
                 </span>
                 <div>
@@ -102,39 +102,40 @@ export default function NewsList() {
 
       {/* Grid of articles */}
       {filteredArticles.length === 0 ? (
-        <div className="text-center py-20 bg-zinc-950/40 rounded-3xl border border-zinc-900">
+        <div className="text-center py-20 bg-[#1A1A1A] rounded-3xl border border-zinc-800/30">
           <span className="text-5xl block mb-4">📰</span>
           <h3 className="text-2xl font-bold text-white mb-2">No News Found</h3>
           <p className="text-zinc-500 text-sm">We couldn't find any articles matching your filters.</p>
         </div>
       ) : (
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {filteredArticles
             .slice(searchQuery === "" && activeCategory === "All" ? 1 : 0)
             .map((article) => (
               <article
                 key={article.id}
-                className="group flex flex-col justify-between bg-zinc-950/40 border border-zinc-900 hover:border-red-600/40 rounded-2xl overflow-hidden hover:-translate-y-2 hover:shadow-[0_0_30px_rgba(220,38,38,0.15)] transition duration-300"
+                className="group flex flex-col justify-between transition duration-300"
               >
                 <div>
-                  <div className="relative h-48 overflow-hidden bg-zinc-900">
+                  {/* News Image */}
+                  <div className="relative h-48 overflow-hidden rounded-2xl bg-[#1A1A1A] transition duration-500 ease-out group-hover:-translate-y-2 group-hover:shadow-[0_20px_40px_rgba(0,0,0,0.6)]">
                     <img
                       src={article.image}
                       alt={article.title}
-                      className="w-full h-full object-cover group-hover:scale-105 transition duration-550"
+                      className="w-full h-full object-cover transition duration-700 ease-out group-hover:scale-[1.03]"
                     />
-                    <div className="absolute top-3 left-3 bg-black/75 backdrop-blur-md text-red-500 font-bold text-xs uppercase px-3 py-1 rounded-full tracking-wider border border-zinc-800">
+                    <div className="absolute top-3 left-3 bg-[#111111]/85 text-white font-bold text-xs uppercase px-2.5 py-1 rounded-md tracking-wider border border-zinc-800/40 backdrop-blur-sm">
                       {article.category}
                     </div>
                   </div>
 
-                  <div className="p-5 space-y-3">
+                  <div className="py-4 space-y-3">
                     <div className="text-xs text-zinc-500 flex justify-between">
                       <span>{article.readTime}</span>
                       <span>{new Date(article.publishedAt).toLocaleDateString()}</span>
                     </div>
                     <Link href={`/news/${article.id}`}>
-                      <h3 className="font-bold text-lg text-white group-hover:text-red-500 line-clamp-2 transition leading-snug">
+                      <h3 className="font-bold text-lg text-white group-hover:text-zinc-300 line-clamp-2 transition leading-snug">
                         {article.title}
                       </h3>
                     </Link>
@@ -144,8 +145,8 @@ export default function NewsList() {
                   </div>
                 </div>
 
-                <div className="p-5 pt-0 border-t border-zinc-900/50 flex items-center gap-3">
-                  <span className="w-6 h-6 rounded-full bg-zinc-900 flex items-center justify-center text-sm">
+                <div className="pt-4 border-t border-zinc-800/40 flex items-center gap-3">
+                  <span className="w-6 h-6 rounded-full bg-[#1A1A1A] flex items-center justify-center text-sm">
                     {article.author.avatar}
                   </span>
                   <div>
@@ -154,7 +155,7 @@ export default function NewsList() {
                   </div>
                   <Link
                     href={`/news/${article.id}`}
-                    className="ml-auto text-xs text-red-500 font-semibold group-hover:text-red-400 flex items-center gap-1 transition"
+                    className="ml-auto text-xs text-white font-bold hover:text-zinc-300 flex items-center gap-1 transition"
                   >
                     Read More <span className="group-hover:translate-x-1 transition duration-200">➔</span>
                   </Link>
