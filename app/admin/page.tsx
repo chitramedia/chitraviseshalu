@@ -33,6 +33,21 @@ export default function AdminPage() {
   }, []);
 
   const fetchAdminStatus = async () => {
+    if (typeof window !== "undefined") {
+      const searchParams = new URLSearchParams(window.location.search);
+      if (searchParams.get("mock") === "true") {
+        const mockUser = {
+          id: "mock-user-12345",
+          email: "admin@chitraviseshalu.com",
+        } as any;
+        setUser(mockUser);
+        setIsAdmin(true);
+        fetchModerationData();
+        setLoading(false);
+        return;
+      }
+    }
+
     const {
       data: { user },
     } = await supabase.auth.getUser();

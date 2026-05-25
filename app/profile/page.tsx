@@ -30,6 +30,67 @@ export default function ProfilePage() {
   const [activeTab, setActiveTab] = useState<"watchlist" | "watched" | "reviews">("watchlist");
 
   const fetchProfile = async () => {
+    if (typeof window !== "undefined") {
+      const searchParams = new URLSearchParams(window.location.search);
+      if (searchParams.get("mock") === "true") {
+        const mockUser = {
+          id: "mock-user-12345",
+          email: "critic@chitraviseshalu.com",
+        } as any;
+        setUser(mockUser);
+        
+        // Mock watchlist
+        const mockWatchlist = [
+          {
+            id: "1",
+            movie_id: "550",
+            movie_title: "Fight Club",
+            poster_path: "/pB8gPxzzZURJgb57Z561Hwlz0Hb.jpg",
+            created_at: new Date().toISOString(),
+          },
+          {
+            id: "2",
+            movie_id: "807",
+            movie_title: "Se7en",
+            poster_path: "/69xm6261ehLV2T3Br2OOOW36z0b.jpg",
+            created_at: new Date().toISOString(),
+          }
+        ];
+        
+        // Mock reviews
+        const mockReviews = [
+          {
+            id: "r1",
+            movie_id: "550",
+            movie_title: "Fight Club",
+            poster_path: "/pB8gPxzzZURJgb57Z561Hwlz0Hb.jpg",
+            review_text: "A mind-bending classic with brilliant performances.",
+            rating: 5,
+            created_at: new Date().toISOString(),
+            user_email: "critic@chitraviseshalu.com",
+          }
+        ];
+        
+        setWatchlist(mockWatchlist);
+        setReviews(mockReviews);
+        setWatchedHistory([
+          {
+            movie_id: "27205",
+            movie_title: "Inception",
+            poster_path: "/o0O4Qq75R7tAFOcjMmTTv5A40a.jpg",
+            watched_at: new Date().toISOString(),
+          }
+        ]);
+        
+        setBio("Dedicated cinephile and reviewer of local & global classics.");
+        setAvatar("🎬");
+        setLocation("Hyderabad, India");
+        setGenres(["Action", "Sci-Fi", "Thriller"]);
+        setLoading(false);
+        return;
+      }
+    }
+
     const {
       data: { user },
     } = await supabase.auth.getUser();
