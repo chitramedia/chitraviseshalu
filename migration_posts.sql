@@ -1,20 +1,7 @@
 -- SQL Migration for Movie News & OTT Updates Table
 -- Run this in your Supabase SQL Editor (https://supabase.com/dashboard/project/_/sql)
 
--- 1. Create custom enum types for clean data filtering if they don't exist
-DO $$ BEGIN
-    CREATE TYPE content_category AS ENUM ('Movie News', 'OTT Release', 'Review', 'Box Office', 'Rumor');
-EXCEPTION
-    WHEN duplicate_object THEN null;
-END $$;
-
-DO $$ BEGIN
-    CREATE TYPE ott_platform AS ENUM ('Netflix', 'Prime Video', 'Hotstar', 'Aha', 'Zee5', 'SonyLIV', 'Theaters');
-EXCEPTION
-    WHEN duplicate_object THEN null;
-END $$;
-
--- 2. Create the posts table
+-- 1. Create the posts table
 CREATE TABLE IF NOT EXISTS public.posts (
     id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
     created_at TIMESTAMPTZ DEFAULT timezone('utc'::text, now()) NOT NULL,
@@ -28,8 +15,8 @@ CREATE TABLE IF NOT EXISTS public.posts (
     image_url TEXT,            -- Link to the movie poster or banner image
     
     -- Metadata & Filtering
-    category content_category NOT NULL DEFAULT 'Movie News',
-    platform ott_platform NOT NULL DEFAULT 'Theaters',
+    category TEXT NOT NULL DEFAULT 'Movie News',
+    platform TEXT NOT NULL DEFAULT 'Theaters',
     release_date DATE,         -- Explicit streaming/theater release date if applicable
     streaming_url TEXT,        -- Direct link to watch (e.g., Netflix link)
     
