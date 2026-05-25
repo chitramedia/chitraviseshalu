@@ -7,15 +7,16 @@ import Link from "next/link";
 
 type Props = {
   params: Promise<{
-    id: string;
+    slug: string;
   }>;
 };
 
 // Generate dynamic SEO metadata
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { id } = await params;
+  const { slug } = await params;
   const articles = await getNewsArticles();
-  const article = articles.find((a) => a.id === id);
+  const article = articles.find((a) => a.id === slug);
+
 
   if (!article) {
     return {
@@ -38,9 +39,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function NewsArticlePage({ params }: Props) {
-  const { id } = await params;
+  const { slug } = await params;
   const articles = await getNewsArticles();
-  const article = articles.find((a) => a.id === id);
+  const article = articles.find((a) => a.id === slug);
 
   if (!article) {
     return (

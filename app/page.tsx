@@ -1,7 +1,7 @@
 import Navbar from "./components/Navbar";
 import HeroSection from "./components/HeroSection";
 import TrendingSection from "./components/TrendingSection";
-import HomeNewsSection from "./components/HomeNewsSection";
+import MovieFeed from "./components/MovieFeed";
 import HomeReviewsSection from "./components/HomeReviewsSection";
 import CommunityPoll from "./components/CommunityPoll";
 import Footer from "./components/Footer";
@@ -26,8 +26,18 @@ export default function Home() {
         {/* Trending Movies carousel */}
         <TrendingSection />
 
-        {/* Short Gossip Drops / Mini Content Posts */}
-        <HomeNewsSection />
+        {/* Dynamic Movie & OTT Feed Grid */}
+        <section className="py-10">
+          <div className="max-w-7xl mx-auto px-6">
+            <span className="text-red-500 text-xs uppercase tracking-widest font-bold block mb-1">
+              ⚡ Cinema Hub
+            </span>
+            <h2 className="text-3xl md:text-4xl font-black text-white mb-6">
+              Latest Industry Updates
+            </h2>
+          </div>
+          <MovieFeed />
+        </section>
 
         {/* Latest Community Reviews */}
         <HomeReviewsSection />

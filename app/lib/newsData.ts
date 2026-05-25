@@ -9,6 +9,7 @@ export interface NewsArticle {
   category: "Tollywood" | "Bollywood" | "Hollywood" | "OTT" | "Box Office" | "Reviews";
   publishedAt: string;
   readTime: string;
+  viewsCount?: number;
   author: {
     name: string;
     role: string;
@@ -157,6 +158,7 @@ export async function getNewsArticles(): Promise<NewsArticle[]> {
       category: post.category as any,
       publishedAt: post.created_at,
       readTime: calculateReadTime(post.content),
+      viewsCount: post.views_count || 0,
       author: {
         name: post.author_id ? (profileMap[post.author_id] || "Admin") : "Admin",
         role: "Cinema Writer",

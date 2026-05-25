@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { NewsArticle } from "../lib/newsData";
 import Link from "next/link";
 import BackButton from "./BackButton";
+import { supabase } from "../lib/supabase";
 
 type Props = {
   article: NewsArticle;
@@ -43,6 +44,17 @@ export default function NewsArticleContent({ article }: Props) {
         console.error(e);
       }
     }
+  }, [article.id]);
+
+  useEffect(() => {
+    async function incrementView() {
+      try {
+        await supabase.rpc("increment_post_views_by_slug", { post_slug: article.id });
+      } catch (err) {
+        console.error("Failed to increment article view count:", err);
+      }
+    }
+    incrementView();
   }, [article.id]);
 
   const toggleBookmark = () => {
@@ -142,6 +154,9 @@ export default function NewsArticleContent({ article }: Props) {
         <div className="text-xs text-zinc-400 flex items-center gap-4">
           <span>📅 {new Date(article.publishedAt).toLocaleDateString()}</span>
           <span>⏱️ {article.readTime}</span>
+          {typeof article.viewsCount === "number" && article.viewsCount > 0 && (
+            <span>👁️ {article.viewsCount.toLocaleString()} views</span>
+          )}
         </div>
       </div>
 
