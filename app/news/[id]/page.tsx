@@ -14,7 +14,7 @@ type Props = {
 // Generate dynamic SEO metadata
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id } = await params;
-  const articles = getNewsArticles();
+  const articles = await getNewsArticles();
   const article = articles.find((a) => a.id === id);
 
   if (!article) {
@@ -39,7 +39,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function NewsArticlePage({ params }: Props) {
   const { id } = await params;
-  const articles = getNewsArticles();
+  const articles = await getNewsArticles();
   const article = articles.find((a) => a.id === id);
 
   if (!article) {

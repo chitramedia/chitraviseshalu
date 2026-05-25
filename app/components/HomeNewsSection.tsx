@@ -8,7 +8,7 @@ export default function HomeNewsSection() {
   const [articles, setArticles] = useState<NewsArticle[]>([]);
 
   useEffect(() => {
-    setArticles(getNewsArticles().slice(0, 3));
+    getNewsArticles().then(data => setArticles(data.slice(0, 3)));
   }, []);
 
   if (articles.length === 0) return null;

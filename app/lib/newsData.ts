@@ -1,3 +1,5 @@
+import { supabase } from "./supabase";
+
 export interface NewsArticle {
   id: string;
   title: string;
@@ -110,37 +112,88 @@ The film has completed primary filming in New Zealand and is currently undergoin
   }
 ];
 
-export function getNewsArticles(): NewsArticle[] {
-  if (typeof window === "undefined") {
-    return DEFAULT_NEWS;
-  }
-  const stored = localStorage.getItem("chitra_news_articles");
-  if (stored) {
-    try {
-      return JSON.parse(stored);
-    } catch {
+
+function calculateReadTime(content: string): string {
+  const words = content.trim().split(/\s+/).length;
+  const time = Math.ceil(words / 200);
+  return `${time} min read`;
+}
+
+export async function getNewsArticles(): Promise<NewsArticle[]> {
+  try {
+    const { data, error } = await supabase
+      .from("posts")
+      .select(`
+        *,
+        author:profiles(display_name)
+      `)
+      .order("created_at", { ascending: false });
+
+    if (error || !data || data.length === 0) {
+      if (error) console.error("Error fetching news from Supabase:", error.message);
       return DEFAULT_NEWS;
     }
+
+    return data.map((post: any) => ({
+      id: post.slug,
+      title: post.title,
+      summary: post.summary || post.content.substring(0, 150) + "...",
+      content: post.content,
+      image: post.image_url || "https://images.unsplash.com/photo-1536440136628-849c177e76a1?auto=format&fit=crop&w=800&q=80",
+      category: post.category as any,
+      publishedAt: post.created_at,
+      readTime: calculateReadTime(post.content),
+      author: {
+        name: post.author?.display_name || "Admin",
+        role: "Cinema Writer",
+        avatar: "🍿"
+      }
+    }));
+  } catch (err) {
+    console.error("News fetch fallback error:", err);
+    return DEFAULT_NEWS;
   }
-  return DEFAULT_NEWS;
 }
 
-export function saveNewsArticle(article: NewsArticle) {
-  if (typeof window === "undefined") return;
-  const current = getNewsArticles();
-  // check if update or create
-  const existsIndex = current.findIndex(a => a.id === article.id);
-  if (existsIndex >= 0) {
-    current[existsIndex] = article;
+export async function saveNewsArticle(article: NewsArticle) {
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) throw new Error("Authentication required to save articles");
+
+  // Check if article already exists by slug (which is article.id)
+  const { data: existingPost } = await supabase
+    .from("posts")
+    .select("id")
+    .eq("slug", article.id)
+    .maybeSingle();
+
+  const postData = {
+    title: article.title,
+    slug: article.id,
+    summary: article.summary,
+    content: article.content,
+    image_url: article.image,
+    category: article.category,
+    author_id: user.id
+  };
+
+  if (existingPost) {
+    const { error } = await supabase
+      .from("posts")
+      .update(postData)
+      .eq("id", existingPost.id);
+    if (error) throw error;
   } else {
-    current.unshift(article);
+    const { error } = await supabase
+      .from("posts")
+      .insert(postData);
+    if (error) throw error;
   }
-  localStorage.setItem("chitra_news_articles", JSON.stringify(current));
 }
 
-export function deleteNewsArticle(id: string) {
-  if (typeof window === "undefined") return;
-  const current = getNewsArticles();
-  const filtered = current.filter(a => a.id !== id);
-  localStorage.setItem("chitra_news_articles", JSON.stringify(filtered));
+export async function deleteNewsArticle(id: string) {
+  const { error } = await supabase
+    .from("posts")
+    .delete()
+    .eq("slug", id);
+  if (error) throw error;
 }

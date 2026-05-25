@@ -75,7 +75,8 @@ export default function AdminPage() {
     setReviews(data || []);
 
     // Load current articles
-    setArticlesList(getNewsArticles());
+    const articles = await getNewsArticles();
+    setArticlesList(articles);
 
     // Load announcement
     const storedAnn = localStorage.getItem("chitra_featured_announcement");
@@ -84,7 +85,7 @@ export default function AdminPage() {
     }
   };
 
-  const handleCreateArticle = (e: React.FormEvent) => {
+  const handleCreateArticle = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!newsTitle.trim() || !newsContent.trim()) {
@@ -108,21 +109,29 @@ export default function AdminPage() {
       },
     };
 
-    saveNewsArticle(newArticle);
-    alert("News article published successfully!");
+    try {
+      await saveNewsArticle(newArticle);
+      alert("News article published successfully!");
 
-    // Clear form
-    setNewsTitle("");
-    setNewsSummary("");
-    setNewsContent("");
-    setNewsImage("");
-    fetchModerationData();
+      // Clear form
+      setNewsTitle("");
+      setNewsSummary("");
+      setNewsContent("");
+      setNewsImage("");
+      fetchModerationData();
+    } catch (err: any) {
+      alert(`Failed to save news article: ${err.message}`);
+    }
   };
 
-  const handleDeleteArticle = (id: string) => {
+  const handleDeleteArticle = async (id: string) => {
     if (confirm("Are you sure you want to delete this article?")) {
-      deleteNewsArticle(id);
-      fetchModerationData();
+      try {
+        await deleteNewsArticle(id);
+        fetchModerationData();
+      } catch (err: any) {
+        alert(`Failed to delete news article: ${err.message}`);
+      }
     }
   };
 

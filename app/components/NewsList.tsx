@@ -10,7 +10,7 @@ export default function NewsList() {
   const [searchQuery, setSearchQuery] = useState<string>("");
 
   useEffect(() => {
-    setArticles(getNewsArticles());
+    getNewsArticles().then(setArticles);
   }, []);
 
   const categories = ["All", "Tollywood", "Bollywood", "Hollywood", "OTT", "Box Office"];
