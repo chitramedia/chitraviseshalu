@@ -121,20 +121,34 @@ function calculateReadTime(content: string): string {
 
 export async function getNewsArticles(): Promise<NewsArticle[]> {
   try {
-    const { data, error } = await supabase
+    const { data: posts, error: postsError } = await supabase
       .from("posts")
-      .select(`
-        *,
-        author:profiles(display_name)
-      `)
+      .select("*")
       .order("created_at", { ascending: false });
 
-    if (error || !data || data.length === 0) {
-      if (error) console.error("Error fetching news from Supabase:", error.message);
+    if (postsError || !posts || posts.length === 0) {
+      if (postsError) console.error("Error fetching news from Supabase:", postsError.message);
       return DEFAULT_NEWS;
     }
 
-    return data.map((post: any) => ({
+    // Fetch author profiles in a separate query to bypass the PostgREST schema relation cache issue
+    const authorIds = posts.map((post: any) => post.author_id).filter(Boolean);
+    const profileMap: Record<string, string> = {};
+
+    if (authorIds.length > 0) {
+      const { data: profiles } = await supabase
+        .from("profiles")
+        .select("id, display_name")
+        .in("id", authorIds);
+
+      if (profiles) {
+        profiles.forEach((profile: any) => {
+          profileMap[profile.id] = profile.display_name;
+        });
+      }
+    }
+
+    return posts.map((post: any) => ({
       id: post.slug,
       title: post.title,
       summary: post.summary || post.content.substring(0, 150) + "...",
@@ -144,7 +158,7 @@ export async function getNewsArticles(): Promise<NewsArticle[]> {
       publishedAt: post.created_at,
       readTime: calculateReadTime(post.content),
       author: {
-        name: post.author?.display_name || "Admin",
+        name: post.author_id ? (profileMap[post.author_id] || "Admin") : "Admin",
         role: "Cinema Writer",
         avatar: "🍿"
       }
