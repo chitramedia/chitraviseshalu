@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { supabase } from "../lib/supabase";
+import { supabase, getSessionUser } from "../lib/supabase";
 
 type Props = {
   movieId: string;
@@ -88,9 +88,7 @@ export default function ReviewSection({
   }, [storyRating, actingRating, directionRating, musicRating, visualsRating, showDetailed]);
 
   const submitReview = async () => {
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
+    const user = await getSessionUser();
 
     if (!user) {
       alert("Please login to submit a review");

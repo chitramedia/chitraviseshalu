@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { supabase } from "../lib/supabase";
+import { supabase, getSessionUser } from "../lib/supabase";
 import BackButton from "../components/BackButton";
 import EditProfile from "../components/EditProfile";
 import Link from "next/link";
@@ -91,9 +91,7 @@ export default function ProfilePage() {
       }
     }
 
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
+    const user = await getSessionUser();
 
     if (!user) {
       setLoading(false);

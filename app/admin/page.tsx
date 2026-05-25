@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { supabase } from "../lib/supabase";
+import { supabase, getSessionUser } from "../lib/supabase";
 import { saveNewsArticle, getNewsArticles, NewsArticle, deleteNewsArticle } from "../lib/newsData";
 import BackButton from "../components/BackButton";
 import Navbar from "../components/Navbar";
@@ -48,9 +48,7 @@ export default function AdminPage() {
       }
     }
 
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
+    const user = await getSessionUser();
 
     setUser(user);
 

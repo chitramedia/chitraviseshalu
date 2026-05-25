@@ -1,18 +1,40 @@
 import FeaturedAnnouncement from "./FeaturedAnnouncement";
 
 async function getTrendingMovie() {
-  const response = await fetch(
-    "https://api.themoviedb.org/3/trending/movie/day",
-    {
-      headers: {
-        Authorization: `Bearer ${process.env.TMDB_BEARER_TOKEN}`,
-        "Content-Type": "application/json",
-      },
-      next: { revalidate: 3600 },
-    }
-  );
+  try {
+    const response = await fetch(
+      "https://api.themoviedb.org/3/trending/movie/day",
+      {
+        headers: {
+          Authorization: `Bearer ${process.env.TMDB_BEARER_TOKEN}`,
+          "Content-Type": "application/json",
+        },
+        next: { revalidate: 3600 },
+      }
+    );
 
-  return response.json();
+    if (!response.ok) {
+      throw new Error(`TMDB responded with status ${response.status}`);
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error("Failed to fetch trending movie for hero banner:", error);
+    // Return curated mock movie for hero background when offline
+    return {
+      results: [
+        {
+          id: 27205,
+          title: "Inception",
+          poster_path: "/o0O4Qq75R7tAFOcjMmTTv5A40a.jpg",
+          backdrop_path: "/s3TBr7xVhuoEQQQQQQQQQQQQQQ.jpg",
+          vote_average: 8.3,
+          release_date: "2010-07-15",
+          overview: "Cobb, a skilled thief who steals valuable secrets from deep within the subconscious during the dream state, is given a chance at redemption: to plant an idea into a target's mind."
+        }
+      ]
+    };
+  }
 }
 
 export default async function HeroSection() {

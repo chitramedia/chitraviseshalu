@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { supabase } from "../lib/supabase";
+import { supabase, getSessionUser } from "../lib/supabase";
 
 type Props = {
   movieId: string;
@@ -23,10 +23,7 @@ export default function WatchlistButton({
   }, []);
 
   const checkWatchlist = async () => {
-
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
+    const user = await getSessionUser();
 
     if (!user) return;
 
@@ -46,9 +43,7 @@ export default function WatchlistButton({
 
     setLoading(true);
 
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
+    const user = await getSessionUser();
 
     if (!user) {
       alert("Please login first");

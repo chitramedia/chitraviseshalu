@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { supabase } from "../lib/supabase";
+import { supabase, getSessionUser } from "../lib/supabase";
 
 interface ProfileMetadata {
   bio?: string;
@@ -26,9 +26,7 @@ export default function EditProfile() {
   }, []);
 
   const fetchProfile = async () => {
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
+    const user = await getSessionUser();
 
     if (!user) return;
 
@@ -69,9 +67,7 @@ export default function EditProfile() {
   const saveProfile = async () => {
     setLoading(true);
 
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
+    const user = await getSessionUser();
 
     if (!user) {
       setLoading(false);

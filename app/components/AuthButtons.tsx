@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { supabase } from "../lib/supabase";
+import { supabase, getSessionUser } from "../lib/supabase";
+import Link from "next/link";
 
 export default function AuthButtons() {
 
@@ -25,11 +26,7 @@ export default function AuthButtons() {
   }, []);
 
   const checkUser = async () => {
-
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-
+    const user = await getSessionUser();
     setUser(user);
   };
 
@@ -59,12 +56,14 @@ export default function AuthButtons() {
       {user ? (
 
         <>
-          {/* Avatar */}
-          <div className="hidden md:flex items-center justify-center w-9 h-9 rounded-full bg-white text-black text-sm font-bold shadow-[0_0_15px_rgba(255,255,255,0.18)]">
-
+          {/* Clickable Avatar pointing to Profile */}
+          <Link
+            href="/profile"
+            title="View Profile"
+            className="hidden md:flex items-center justify-center w-9 h-9 rounded-full bg-white text-black text-sm font-bold shadow-[0_0_15px_rgba(255,255,255,0.18)] hover:scale-105 hover:bg-zinc-200 transition duration-300"
+          >
             {user.email?.charAt(0).toUpperCase()}
-
-          </div>
+          </Link>
 
           {/* Logout */}
           <button
