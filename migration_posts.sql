@@ -34,7 +34,7 @@ CREATE TABLE IF NOT EXISTS public.posts (
     streaming_url TEXT,        -- Direct link to watch (e.g., Netflix link)
     
     -- Authorship (links to your authenticated users/profiles)
-    author_id UUID REFERENCES auth.users(id) ON DELETE SET NULL
+    author_id UUID REFERENCES public.profiles(id) ON DELETE SET NULL
 );
 
 -- 3. Create indexes for fast searching and filtering
