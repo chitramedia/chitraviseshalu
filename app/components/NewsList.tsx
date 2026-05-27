@@ -3,15 +3,21 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { getNewsArticles, NewsArticle } from "../lib/newsData";
+import NewsCardSkeleton from "./skeletons/NewsCardSkeleton";
 
 export default function NewsList() {
   const [articles, setArticles] = useState<NewsArticle[]>([]);
   const [activeCategory, setActiveCategory] = useState<string>("All");
   const [searchQuery, setSearchQuery] = useState<string>("");
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    getNewsArticles().then(setArticles);
+    getNewsArticles().then((data) => {
+      setArticles(data);
+      setLoading(false);
+    });
   }, []);
+
 
   const categories = ["All", "Tollywood", "Bollywood", "Hollywood", "OTT", "Box Office"];
 
@@ -101,7 +107,13 @@ export default function NewsList() {
       )}
 
       {/* Grid of articles */}
-      {filteredArticles.length === 0 ? (
+      {loading ? (
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 animate-pulse">
+          {[1, 2, 3, 4, 5, 6].map((i) => (
+            <NewsCardSkeleton key={i} />
+          ))}
+        </div>
+      ) : filteredArticles.length === 0 ? (
         <div className="text-center py-20 bg-[#1A1A1A] rounded-3xl border border-zinc-800/30">
           <span className="text-5xl block mb-4">📰</span>
           <h3 className="text-2xl font-bold text-white mb-2">No News Found</h3>

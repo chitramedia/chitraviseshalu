@@ -2,6 +2,8 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { useToast } from "./Toast";
+
 
 type Review = {
   id: string;
@@ -46,6 +48,7 @@ function parseReviewText(text: string): ReviewData {
 
 export default function ReviewList({ initialReviews }: Props) {
   const [reviews, setReviews] = useState<Review[]>(initialReviews);
+  const { showToast } = useToast();
   const [searchQuery, setSearchQuery] = useState("");
   const [ratingFilter, setRatingFilter] = useState<number | null>(null);
   const [sortBy, setSortBy] = useState<"latest" | "highest" | "lowest">("latest");
@@ -312,7 +315,7 @@ export default function ReviewList({ initialReviews }: Props) {
                             navigator.clipboard.writeText(
                               `${window.location.origin}/movie/${review.movie_id}`
                             );
-                            alert("Copied link to movie review!");
+                            showToast("Copied link to movie review!", "success");
                           }
                         }}
                         className="text-xs text-zinc-500 hover:text-zinc-300 px-2 py-1 rounded"

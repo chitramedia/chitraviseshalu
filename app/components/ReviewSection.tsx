@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { supabase, getSessionUser } from "../lib/supabase";
+import { useToast } from "./Toast";
 
 type Props = {
   movieId: string;
@@ -54,6 +55,7 @@ export default function ReviewSection({
   const [reviewText, setReviewText] = useState("");
   const [rating, setRating] = useState(5);
   const [loading, setLoading] = useState(false);
+  const { showToast } = useToast();
 
   // Ratings breakdown states
   const [showDetailed, setShowDetailed] = useState(false);
@@ -91,12 +93,12 @@ export default function ReviewSection({
     const user = await getSessionUser();
 
     if (!user) {
-      alert("Please login to submit a review");
+      showToast("Please login to submit a review", "error");
       return;
     }
 
     if (!reviewText.trim()) {
-      alert("Please write a review");
+      showToast("Please write some review text first", "error");
       return;
     }
 
@@ -127,17 +129,18 @@ export default function ReviewSection({
         review_text: finalReviewText,
         rating,
         user_email: user.email,
+        user_id: user.id, // Ensure user_id is set
       },
     ]);
 
     setLoading(false);
 
     if (error) {
-      alert(error.message);
+      showToast(error.message, "error");
       return;
     }
 
-    alert("Review submitted successfully!");
+    showToast("Review submitted successfully!", "success");
     setReviewText("");
     setRating(5);
     setStoryRating(5);
@@ -148,6 +151,7 @@ export default function ReviewSection({
     setShowDetailed(false);
     fetchReviews();
   };
+
 
   return (
     <div className="mt-16 space-y-8 border-t border-zinc-800/30 pt-10">
@@ -317,7 +321,7 @@ export default function ReviewSection({
       <div className="space-y-6">
         {reviews.length === 0 ? (
           <div className="text-center py-10 bg-[#1A1A1A] border border-zinc-800/30 rounded-3xl text-zinc-400 italic text-sm shadow-md">
-            No reviews yet. Be the first to express your thoughts!
+            No reviews yet. Be the first reviewer to share your thoughts on this masterpiece!
           </div>
         ) : (
           reviews.map((item) => {

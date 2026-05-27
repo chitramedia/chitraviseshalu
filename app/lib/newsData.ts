@@ -10,6 +10,7 @@ export interface NewsArticle {
   publishedAt: string;
   readTime: string;
   viewsCount?: number;
+  status?: "published" | "draft" | "scheduled";
   author: {
     name: string;
     role: string;
@@ -34,6 +35,7 @@ Industry experts predict that *Pushpa 2* is poised to open with a historic ₹20
     category: "Tollywood",
     publishedAt: "2026-05-24T10:00:00Z",
     readTime: "3 min read",
+    status: "published",
     author: {
       name: "Suresh Rao",
       role: "Senior Cinema Analyst",
@@ -58,6 +60,7 @@ Principal photography is expected to begin in August 2026, with shooting schedul
     category: "Tollywood",
     publishedAt: "2026-05-23T14:30:00Z",
     readTime: "4 min read",
+    status: "published",
     author: {
       name: "Karan Johar",
       role: "Industry Insider",
@@ -84,6 +87,7 @@ Let us know your reviews in our **Community Feed** after watching!`,
     category: "OTT",
     publishedAt: "2026-05-22T08:15:00Z",
     readTime: "5 min read",
+    status: "published",
     author: {
       name: "Radhika Sen",
       role: "OTT Specialist",
@@ -105,6 +109,7 @@ The film has completed primary filming in New Zealand and is currently undergoin
     category: "Hollywood",
     publishedAt: "2026-05-21T18:00:00Z",
     readTime: "3 min read",
+    status: "published",
     author: {
       name: "John Miller",
       role: "Hollywood Correspondent",
@@ -120,12 +125,17 @@ function calculateReadTime(content: string): string {
   return `${time} min read`;
 }
 
-export async function getNewsArticles(): Promise<NewsArticle[]> {
+export async function getNewsArticles(includeAll = false): Promise<NewsArticle[]> {
   try {
-    const { data: posts, error: postsError } = await supabase
-      .from("posts")
-      .select("*")
-      .order("created_at", { ascending: false });
+    let query = supabase.from("posts").select("*");
+
+    if (!includeAll) {
+      query = query
+        .eq("status", "published")
+        .lte("published_at", new Date().toISOString());
+    }
+
+    const { data: posts, error: postsError } = await query.order("published_at", { ascending: false });
 
     if (postsError || !posts || posts.length === 0) {
       if (postsError) console.error("Error fetching news from Supabase:", postsError.message);
@@ -156,9 +166,10 @@ export async function getNewsArticles(): Promise<NewsArticle[]> {
       content: post.content,
       image: post.image_url || "https://images.unsplash.com/photo-1536440136628-849c177e76a1?auto=format&fit=crop&w=800&q=80",
       category: post.category as any,
-      publishedAt: post.created_at,
+      publishedAt: post.published_at,
       readTime: calculateReadTime(post.content),
       viewsCount: post.views_count || 0,
+      status: post.status as any || "published",
       author: {
         name: post.author_id ? (profileMap[post.author_id] || "Admin") : "Admin",
         role: "Cinema Writer",
@@ -189,7 +200,9 @@ export async function saveNewsArticle(article: NewsArticle) {
     content: article.content,
     image_url: article.image,
     category: article.category,
-    author_id: user.id
+    author_id: user.id,
+    status: article.status || "published",
+    published_at: article.publishedAt || new Date().toISOString()
   };
 
   if (existingPost) {

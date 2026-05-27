@@ -1,4 +1,5 @@
 import MobileBottomNav from "./components/MobileBottomNav";
+import { ToastProvider } from "./components/Toast";
 import "./globals.css";
 
 export const metadata = {
@@ -13,15 +14,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-
       <body>
-
-        {children}
-
-        <MobileBottomNav />
-
+        <ToastProvider>
+          {children}
+          <MobileBottomNav />
+        </ToastProvider>
       </body>
-
     </html>
   );
 }

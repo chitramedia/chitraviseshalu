@@ -8,6 +8,8 @@ import Link from "next/link";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 
+import ProfileSkeleton from "../components/skeletons/ProfileSkeleton";
+
 interface ProfileMetadata {
   bio?: string;
   avatar?: string;
@@ -188,16 +190,14 @@ export default function ProfilePage() {
     return (
       <>
         <Navbar />
-        <main className="min-h-screen bg-[#111111] text-white flex items-center justify-center">
-          <div className="flex flex-col items-center gap-3">
-            <div className="w-8 h-8 border-4 border-zinc-800 border-t-white rounded-full animate-spin"></div>
-            <span className="text-zinc-500 text-sm font-semibold">Loading Profile...</span>
-          </div>
+        <main className="min-h-screen bg-[#111111] text-white px-4 md:px-6 pt-28 pb-16">
+          <ProfileSkeleton />
         </main>
         <Footer />
       </>
     );
   }
+
 
   if (!user) {
     return (

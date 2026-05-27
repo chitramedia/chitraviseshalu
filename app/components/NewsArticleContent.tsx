@@ -5,6 +5,7 @@ import { NewsArticle } from "../lib/newsData";
 import Link from "next/link";
 import BackButton from "./BackButton";
 import { supabase } from "../lib/supabase";
+import { useToast } from "./Toast";
 
 type Props = {
   article: NewsArticle;
@@ -23,6 +24,7 @@ export default function NewsArticleContent({ article }: Props) {
   const [authorName, setAuthorName] = useState("");
   const [isBookmarked, setIsBookmarked] = useState(false);
   const [shareSuccess, setShareSuccess] = useState(false);
+  const { showToast } = useToast();
 
   useEffect(() => {
     // Load comments and bookmark status from local storage
@@ -69,9 +71,11 @@ export default function NewsArticleContent({ article }: Props) {
     if (isBookmarked) {
       list = list.filter((id) => id !== article.id);
       setIsBookmarked(false);
+      showToast("Removed article from bookmarks", "info");
     } else {
       list.push(article.id);
       setIsBookmarked(true);
+      showToast("Added article to bookmarks", "success");
     }
     localStorage.setItem("chitra_bookmarked_news", JSON.stringify(list));
   };
@@ -80,6 +84,7 @@ export default function NewsArticleContent({ article }: Props) {
     if (typeof window !== "undefined") {
       navigator.clipboard.writeText(window.location.href);
       setShareSuccess(true);
+      showToast("Article link copied to clipboard!", "success");
       setTimeout(() => setShareSuccess(false), 2000);
     }
   };
@@ -99,6 +104,7 @@ export default function NewsArticleContent({ article }: Props) {
     setComments(updated);
     localStorage.setItem(`comments_${article.id}`, JSON.stringify(updated));
     setCommentText("");
+    showToast("Comment posted successfully!", "success");
   };
 
   return (
@@ -148,7 +154,7 @@ export default function NewsArticleContent({ article }: Props) {
           </span>
           <div>
             <div className="font-bold text-white text-sm">{article.author.name}</div>
-            <div className="text-[10px] text-zinc-500 font-bold uppercase tracking-wider">{article.author.role}</div>
+            <div className="text-[10px] text-zinc-550 font-bold uppercase tracking-wider">{article.author.role}</div>
           </div>
         </div>
         <div className="text-xs text-zinc-400 flex items-center gap-4">
@@ -203,7 +209,7 @@ export default function NewsArticleContent({ article }: Props) {
         <form
           onSubmit={(e) => {
             e.preventDefault();
-            alert("Thank you for subscribing!");
+            showToast("Thank you for subscribing to our cinematic digest!", "success");
           }}
           className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto"
         >

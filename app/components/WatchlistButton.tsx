@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { supabase, getSessionUser } from "../lib/supabase";
+import { useToast } from "./Toast";
 
 type Props = {
   movieId: string;
@@ -14,9 +15,9 @@ export default function WatchlistButton({
   movieTitle,
   posterPath,
 }: Props) {
-
   const [saved, setSaved] = useState(false);
   const [loading, setLoading] = useState(false);
+  const { showToast } = useToast();
 
   useEffect(() => {
     checkWatchlist();
@@ -40,30 +41,31 @@ export default function WatchlistButton({
   };
 
   const toggleWatchlist = async () => {
-
     setLoading(true);
 
     const user = await getSessionUser();
 
     if (!user) {
-      alert("Please login first");
+      showToast("Please login first to manage your watchlist", "error");
       setLoading(false);
       return;
     }
 
     if (saved) {
-
-      await supabase
+      const { error } = await supabase
         .from("watchlists")
         .delete()
         .eq("movie_id", movieId)
         .eq("user_id", user.id);
 
-      setSaved(false);
-
+      if (error) {
+        showToast(error.message, "error");
+      } else {
+        setSaved(false);
+        showToast(`Removed "${movieTitle}" from watchlist`, "success");
+      }
     } else {
-
-      await supabase
+      const { error } = await supabase
         .from("watchlists")
         .insert([
           {
@@ -74,7 +76,12 @@ export default function WatchlistButton({
           },
         ]);
 
-      setSaved(true);
+      if (error) {
+        showToast(error.message, "error");
+      } else {
+        setSaved(true);
+        showToast(`Added "${movieTitle}" to watchlist`, "success");
+      }
     }
 
     setLoading(false);

@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { supabase, getSessionUser } from "../lib/supabase";
+import { useToast } from "./Toast";
 
 interface ProfileMetadata {
   bio?: string;
@@ -17,6 +18,7 @@ export default function EditProfile() {
   const [selectedAvatar, setSelectedAvatar] = useState("🍿");
   const [selectedGenres, setSelectedGenres] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
+  const { showToast } = useToast();
 
   const avatars = ["🍿", "🎬", "🎥", "🎟️", "👑", "🕶️", "🦁", "🔥", "✨"];
   const genres = ["Action", "Comedy", "Drama", "Thriller", "Sci-Fi", "Romance", "Horror", "Mythology", "Fantasy"];
@@ -71,6 +73,7 @@ export default function EditProfile() {
 
     if (!user) {
       setLoading(false);
+      showToast("Authentication required", "error");
       return;
     }
 
@@ -99,12 +102,13 @@ export default function EditProfile() {
     setLoading(false);
 
     if (dbError) {
-      alert(`Display name failed to sync with server, but profile options saved locally: ${dbError.message}`);
+      showToast(`Saved locally but server sync failed: ${dbError.message}`, "info");
       return;
     }
 
-    alert("Profile options updated successfully!");
+    showToast("Profile updated successfully!", "success");
   };
+
 
   return (
     <div className="border border-zinc-800/30 rounded-3xl p-6 md:p-8 bg-[#1A1A1A] shadow-[0_20px_50px_rgba(0,0,0,0.5)] mb-14 space-y-6">

@@ -51,10 +51,10 @@ export default async function WatchlistPage() {
               <span className="text-5xl block animate-pulse">🍿</span>
               <div className="space-y-2">
                 <h2 className="text-2xl font-extrabold text-white">
-                  Your watchlist is waiting for its first masterpiece.
+                  Your cinematic journey starts here.
                 </h2>
                 <p className="text-zinc-400 text-sm max-w-sm mx-auto leading-relaxed">
-                  Browse movies, read critiques, and save recommendations to customize your profile.
+                  Add movies to your watchlist to begin tracking your favorites!
                 </p>
               </div>
               <Link
