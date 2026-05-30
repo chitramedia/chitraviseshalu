@@ -189,10 +189,10 @@ export default function GlobalCinemaHub() {
       </header>
 
       {/* MAIN CONTENT DISPLAY ROUTER */}
-      <main className="max-w-4xl mx-auto pt-10 px-4">
+      <main className="max-w-4xl mx-auto pt-16 px-8 sm:px-12 md:px-16 pb-12">
         
         {activeTab === 'home' && (
-          <div className="space-y-12 animate-slide-in-top">
+          <div className="space-y-20 animate-slide-in-top">
             {/* Mood Search Prompt */}
             <div className="text-center">
               <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight text-white mb-2">
