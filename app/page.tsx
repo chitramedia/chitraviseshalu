@@ -116,6 +116,13 @@ export default function GlobalCinemaHub() {
 
   // Handle local storage persistence
   useEffect(() => {
+    // Read query parameter to set active tab on mount
+    const params = new URLSearchParams(window.location.search);
+    const tab = params.get('tab');
+    if (tab && ['home', 'discover', 'battles', 'challenge'].includes(tab)) {
+      setActiveTab(tab);
+    }
+
     const savedVote = localStorage.getItem('chitra_battle_vote');
     if (savedVote) setBattleVote(savedVote);
 
