@@ -15,7 +15,6 @@ export default function MobileBottomNav() {
   }, []);
 
   if (!mounted) return null;
-  if (pathname === "/") return null;
 
   const navItems = [
     {
